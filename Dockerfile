@@ -3,7 +3,12 @@ FROM crystalnix/omaha-server-base:dev
 ADD . $omaha
 
 # setup all the configfiles
+ADD ./requirements/dev.txt $omaha/requirements/dev.txt
+
 RUN \
+  apt-get update && \
+  apt-get install -y git libpq-dev libxml2 libxslt-dev libyaml-dev && \
+  pip install -r requirements/dev.txt && \
   mkdir /etc/nginx/sites-enabled/ && \
   rm /etc/filebeat/filebeat.yml && \
   rm /etc/nginx/conf.d/default.conf && \

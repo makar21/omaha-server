@@ -18,3 +18,5 @@ web:
     - redis
   volumes:
     - ./:/srv/omaha
+  environment:
+    - DJANGO_SETTINGS_MODULE=omaha_server.settings_local
