@@ -13,6 +13,7 @@ import os
 from datetime import timedelta
 
 from django.core.urlresolvers import reverse_lazy
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_DIR = BASE_DIR
@@ -42,7 +43,7 @@ TEMPLATES = [
         ],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': [
+            'context_processors': TCP + [
                 'django.core.context_processors.request',
                 'absolute.context_processors.absolute',
             ],
@@ -102,6 +103,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'versionfield',
     'absolute',
+    'django_nvd3',
     'djangobower',
     'django_filters',
     'django_tables2',
@@ -331,7 +333,7 @@ CUP_PEM_KEYS = {
     # 'keyid': 'private_key_path',
 }
 
-CRASH_TRACKER = False
+CRASH_TRACKER = os.environ.get('CRASH_TRACKER', 'Sentry')
 
 LOGSTASH_HOST = os.environ.get('LOGSTASH_HOST')
 LOGSTASH_PORT = os.environ.get('LOGSTASH_PORT')
