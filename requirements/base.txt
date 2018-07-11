@@ -5,6 +5,7 @@ bitmapist==3.101
 boto==2.48.0
 celery==4.2.0
 clom==0.7.5
+psycopg2-binary==2.7.5
 Django==1.11.14
 django-absolute==0.3
 django-ace==1.0.3
