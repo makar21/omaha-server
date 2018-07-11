@@ -1,6 +1,7 @@
 FROM ubuntu-debootstrap:14.04
 
 ENV omaha /srv/omaha
+ENV s3fs_version 1.84
 
 RUN \
   apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ABF5BD827BD9BF62 && \
@@ -13,21 +14,16 @@ RUN \
   pip install uwsgi
 
 RUN \
-  wget https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.78.tar.gz -O /usr/src/v1.78.tar.gz && \
-  tar xvz -C /usr/src -f /usr/src/v1.78.tar.gz && \
-  cd /usr/src/s3fs-fuse-1.78 && \
+  wget https://github.com/s3fs-fuse/s3fs-fuse/archive/v${s3fs_version}.tar.gz -O /usr/src/v${s3fs_version}.tar.gz && \
+  tar xvz -C /usr/src -f /usr/src/v${s3fs_version}.tar.gz && \
+  cd /usr/src/s3fs-fuse-${s3fs_version} && \
   ./autogen.sh && \
   ./configure --prefix=/usr && \
   make && \
   make install && \
   mkdir /srv/omaha_s3 && \
-  rm /usr/src/v1.78.tar.gz
-
-RUN \
-  apt-get install -y --fix-missing curl && \
-  curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.0.0-amd64.deb && \
-  dpkg -i filebeat-6.0.0-amd64.deb && \
-  mkdir /tmp/filebeat/
+  rm -rf /usr/src/s3fs-fuse-${s3fs_version} && \
+  rm /usr/src/v${s3fs_version}.tar.gz
 
 RUN mkdir -p $omaha/requirements
 WORKDIR ${omaha}
