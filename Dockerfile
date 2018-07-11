@@ -1,4 +1,4 @@
-FROM crystalnix/omaha-server-base:dev
+FROM omaha-server-base
 
 ADD . $omaha
 
