@@ -13,6 +13,9 @@ class BaseS3Storage(S3BotoStorage):
             if 'x-amz-security-token' in f.args:
                 del f.args['x-amz-security-token']
                 url = f.url
+        if os.environ.get('CDN_FRONTEND'):
+            f.set(host=os.environ.get('CDN_NAME'))
+            url = f.url
         return url
 
 
