@@ -4,6 +4,8 @@ from furl import furl
 from django.utils.module_loading import import_string
 from django.conf import settings
 
+import os
+
 
 class BaseS3Storage(S3BotoStorage):
     def url(self, name):
