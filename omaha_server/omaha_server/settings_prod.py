@@ -20,8 +20,16 @@ PUBLIC_READ_FILE_STORAGE = 'omaha_server.s3utils.PublicReadS3Storage'
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_SES_REGION_NAME = os.environ.get('AWS_SES_REGION_NAME', 'us-east-1')
+AWS_SES_REGION_ENDPOINT = os.environ.get(
+    'AWS_SES_REGION_ENDPOINT', 'email.us-east-1.amazonaws.com'
+)
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 S3_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+
+EMAIL_BACKEND = 'django_ses.SESBackend'
+EMAIL_SENDER = os.environ.get('EMAIL_SENDER')
+EMAIL_RECIPIENTS = os.environ.get('EMAIL_RECIPIENTS')
 
 STATIC_URL = ''.join([S3_URL, 'static/'])
 AWS_PRELOAD_METADATA = True
@@ -31,6 +39,7 @@ AWS_DEFAULT_ACL = 'private'
 
 FILEBEAT_HOST = os.environ.get('FILEBEAT_HOST', 'localhost')
 FILEBEAT_PORT = os.environ.get('FILEBEAT_PORT', 9021)
+RSYSLOG_ENABLE = True if os.environ.get('RSYSLOG_ENABLE', '').title() == 'True' else False
 
 CELERYD_HIJACK_ROOT_LOGGER = False
 
@@ -54,6 +63,12 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
+        },
+        'rsyslog': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.SysLogHandler',
+            'formatter': 'filebeat_format',
+            'address': '/dev/log'
         }
     },
     'loggers': {
@@ -72,6 +87,16 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
+        'celery.task': {
+            'level': 'INFO',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'limitation': {
+            'level': 'INFO',
+            'handlers': ['console'],
+            'propagate': False,
+        }
     },
 }
 
@@ -84,3 +109,10 @@ if FILEBEAT_HOST and FILEBEAT_PORT:
     }
     LOGGING['root']['handlers'].append('filebeat')
     LOGGING['loggers']['django.request']['handlers'].append('filebeat')
+
+if RSYSLOG_ENABLE:
+    LOGGING['root']['handlers'].append('rsyslog')
+    LOGGING['loggers']['django.request']['handlers'].append('rsyslog')
+    LOGGING['loggers']['celery.beat']['handlers'].append('rsyslog')
+    LOGGING['loggers']['celery.task']['handlers'].append('rsyslog')
+    LOGGING['loggers']['limitation']['handlers'].append('rsyslog')

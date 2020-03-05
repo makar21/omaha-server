@@ -1,4 +1,6 @@
-FROM omaha-server-base
+#FROM omaha-server-base
+# TODO: mplesa this might fail
+FROM crystalnix/omaha-server-base:alpine
 
 ADD . $omaha
 
@@ -6,13 +8,14 @@ ADD . $omaha
 RUN \
   mkdir /etc/filebeat/ && \
   mkdir /etc/nginx/sites-enabled/ && \
-  rm -f /etc/filebeat/filebeat.yml && \
-  rm -f /etc/nginx/conf.d/default.conf && \
-  rm -f /etc/nginx/nginx.conf && \
+  rm /etc/filebeat/filebeat.yml && \
+  rm /etc/nginx/conf.d/default.conf && \
+  rm /etc/nginx/nginx.conf && \
+  rm /etc/supervisord.conf && \
   ln -s /srv/omaha/conf/nginx.conf /etc/nginx/ && \
   ln -s /srv/omaha/conf/nginx-app.conf /etc/nginx/sites-enabled/ && \
-  ln -s /srv/omaha/conf/inflate_request.lua /etc/nginx/ && \
-  ln -s /srv/omaha/conf/supervisord.conf /etc/supervisor/conf.d/ && \
+  ln -s /srv/omaha/conf/inflate_request.lua /var/lib/nginx/ && \
+  ln -s /srv/omaha/conf/supervisord.conf /etc/ && \
   ln -s /srv/omaha/conf/filebeat.yml /etc/filebeat/ && \
   chmod go-w /etc/filebeat/filebeat.yml
 

@@ -26,7 +26,8 @@ from mock import patch
 
 from django import test
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
+
 
 from omaha_server.utils import is_private
 from crash.utils import (
@@ -57,9 +58,7 @@ class ShTest(test.TestCase):
     def test_get_stacktrace(self):
         with open(STACKTRACE_PATH, 'rb') as f:
             stacktrace = f.read()
-
         result = get_stacktrace(CRASH_DUMP_PATH)
-
         self.assertEqual(bytes(result.stdout, 'utf8'), stacktrace)
 
 
@@ -121,7 +120,6 @@ class SendStackTraceTest(test.TestCase):
             version='1.0.0.1',
         )
         crash = Crash(
-            pk=123,
             upload_file_minidump=SimpleUploadedFile('./dump.dat', False),
             stacktrace=stacktrace,
             stacktrace_json=parse_stacktrace(stacktrace),

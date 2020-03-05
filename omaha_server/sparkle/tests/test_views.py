@@ -20,7 +20,7 @@ the License.
 
 from django.test import TestCase
 from django.test.client import Client
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from xmlunittest import XmlTestMixin
@@ -75,7 +75,7 @@ class SparkleViewTest(OverloadTestStorageMixin, TestCase, XmlTestMixin):
             channel=channel,
             version='782.112',
             short_version='13.0.782.112',
-            minimum_system_version='10.8.6',
+            minimum_system_version='10.14.4',
             file=SimpleUploadedFile('./chrome.dmg', b'_' * 23963192),
             file_size=23963192)
         obj.save()
