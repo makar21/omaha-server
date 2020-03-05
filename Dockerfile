@@ -1,6 +1,6 @@
 #FROM omaha-server-base
 # TODO: mplesa this might fail
-FROM crystalnix/omaha-server-base:alpine
+FROM brave/omaha-server-base:alpine
 
 ADD . $omaha
 

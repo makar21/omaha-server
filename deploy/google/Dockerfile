@@ -1,1 +1,1 @@
-FROM crystalnix/omaha-server:gcp
+FROM brave/omaha-server:gcp

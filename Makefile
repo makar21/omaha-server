@@ -1,5 +1,5 @@
-DOCKER_REGISTRY_BASE=crystalnix/omaha-server-base
-DOCKER_REGISTRY=crystalnix/omaha-server
+DOCKER_REGISTRY_BASE=brave/omaha-server-base
+DOCKER_REGISTRY=brave/omaha-server
 BASE_IMAGE_TAG=alpine
 DEVELOP_IMAGE_TAG=develop
 STABLE_IMAGE_TAG=stable

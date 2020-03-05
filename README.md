@@ -1,11 +1,11 @@
 # omaha-server
 
-[![Build Status](https://travis-ci.org/Crystalnix/omaha-server.svg?branch=master)](https://travis-ci.org/Crystalnix/omaha-server)
-[![Coverage Status](https://coveralls.io/repos/Crystalnix/omaha-server/badge.png?branch=master)](https://coveralls.io/r/Crystalnix/omaha-server?branch=master)
-[![Code Health](https://landscape.io/github/Crystalnix/omaha-server/master/landscape.svg?style=flat)](https://landscape.io/github/Crystalnix/omaha-server/master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Crystalnix/omaha-server/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Crystalnix/omaha-server/?branch=master)
-[![Apache License, Version 2.0](https://img.shields.io/badge/license-Apache%202.0-red.svg)](https://github.com/Crystalnix/omaha-server/blob/master/LICENSE)
-[![](https://badge.imagelayers.io/crystalnix/omaha-server:master.svg)](https://imagelayers.io/?images=crystalnix/omaha-server:master 'Get your own badge on imagelayers.io')
+[![Build Status](https://travis-ci.org/brave/omaha-server.svg?branch=master)](https://travis-ci.org/brave/omaha-server)
+[![Coverage Status](https://coveralls.io/repos/brave/omaha-server/badge.png?branch=master)](https://coveralls.io/r/brave/omaha-server?branch=master)
+[![Code Health](https://landscape.io/github/brave/omaha-server/master/landscape.svg?style=flat)](https://landscape.io/github/brave/omaha-server/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/brave/omaha-server/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/brave/omaha-server/?branch=master)
+[![Apache License, Version 2.0](https://img.shields.io/badge/license-Apache%202.0-red.svg)](https://github.com/brave/omaha-server/blob/master/LICENSE)
+[![](https://badge.imagelayers.io/brave/omaha-server:master.svg)](https://imagelayers.io/?images=brave/omaha-server:master 'Get your own badge on imagelayers.io')
 
 **Omaha server no longer supports Python version 2 and Django 1.11 or lower version. If you need the old version of the application, then check the old_master branch.**
 
@@ -28,7 +28,7 @@ $ sudo apt-get install docker.io
 $ sudo apt-get install python python-pip
 $ sudo pip install -U pipenv
 $ sudo pip install -U docker-compose
-$ git clone https://github.com/Crystalnix/omaha-server.git
+$ git clone https://github.com/brave/omaha-server.git
 $ cd omaha-server
 # Up local environment
 $ make up
@@ -270,7 +270,7 @@ $ ebs-deploy deploy -e omaha-server-dev
 
 #### Enable HTTPS
 
-1. [Add SSL Certificate for Elastic Load Balancing](https://github.com/Crystalnix/omaha-server/wiki/SSL-Certificate-for-Elastic-Load-Balancing)
+1. [Add SSL Certificate for Elastic Load Balancing](https://github.com/brave/omaha-server/wiki/SSL-Certificate-for-Elastic-Load-Balancing)
 2. Next, just add the following snippet to your file `deploy/settings.yml`
 
   ```yml
