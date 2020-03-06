@@ -1,1 +1,0 @@
-FROM brave/omaha-server:gcp
