@@ -10,7 +10,7 @@ services:
     image: redis:3
 
   web:
-    image: omaha-server
+    image: brave/omaha-server:develop
     privileged: true
     ports:
       - '9090:80'

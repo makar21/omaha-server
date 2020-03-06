@@ -94,7 +94,7 @@ RUN \
   rm -R /tmp/*
 
 # S3FS
-ARG S3FS_VERSION=1.84
+ARG S3FS_VERSION=1.86
 RUN \
   mkdir /usr/src/omaha-server \
   && wget -q https://github.com/s3fs-fuse/s3fs-fuse/archive/v${S3FS_VERSION}.tar.gz -O /usr/src/omaha-server/v${S3FS_VERSION}.tar.gz \

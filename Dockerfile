@@ -1,4 +1,4 @@
-FROM omaha-server-base
+FROM brave/omaha-server-base:alpine
 
 ADD . $omaha
 
