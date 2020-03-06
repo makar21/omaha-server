@@ -1,17 +1,48 @@
-db:
-  extends:
-    file: docker-compose.common.yml
-    service: db
+version: '3.7'
 
-redis:
-  extends:
-    file: docker-compose.common.yml
-    service: redis
+services:
+  db:
+    image: postgres:9.4
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
 
-web:
-  extends:
-    file: docker-compose.common.yml
-    service: web
-  links:
-    - db
-    - redis
+  redis:
+    image: redis:3
+
+  web:
+    image: brave/omaha-server:develop
+    privileged: true
+    ports:
+      - '9090:80'
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_NAME: postgres
+      DB_PASSWORD: ''
+      HOST_NAME: '*'
+      SECRET_KEY: 'SECRET_KEY'
+      DJANGO_SETTINGS_MODULE: 'omaha_server.settings'
+      AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID'
+      AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY'
+      AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      OMAHA_SERVER_PRIVATE: 'True'
+      AWS_ROLE: 'omaha-private'
+      DB_PUBLIC_USER: 'omaha_public'
+      DB_PUBLIC_PASSWORD: 'omaha_public_password'
+      # UWSGI_PROCESSES: 10
+      # UWSGI_THREADS: 8
+      # FILEBEAT_HOST: 'localhost'
+      # FILEBEAT_PORT: '9021'
+      # ELK_HOST: ''
+      # ELK_PORT: ''
+      # FILEBEAT_DESTINATION: ''
+      # RSYSLOG_ENABLE: 'True'
+      secrets:
+        - cup_key
+
+secrets:
+  cup_key:
+    file: cup.key

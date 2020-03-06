@@ -20,15 +20,11 @@ the License.
 
 import os
 
-try:
-  from raven import Client
-  client = Client(os.environ.get('RAVEN_DNS'))
-except ImportError:
-  print("[WARN] raven python module not found")
-
+from raven import Client
 from paver.easy import task, needs
 from paver.easy import sh
 
+client = Client(os.environ.get('RAVEN_DSN'))
 
 @task
 def test():
