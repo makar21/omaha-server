@@ -17,5 +17,5 @@ web:
   links:
     - db
     - redis
-  volumes:
-    - ./:/srv/omaha
+  # volumes:
+  #   - ./:/srv/omaha

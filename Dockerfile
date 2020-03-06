@@ -6,7 +6,6 @@ ADD . $omaha
 
 # setup all the configfiles
 RUN \
-  mkdir /etc/filebeat/ && \
   mkdir /etc/nginx/sites-enabled/ && \
   rm /etc/filebeat/filebeat.yml && \
   rm /etc/nginx/conf.d/default.conf && \

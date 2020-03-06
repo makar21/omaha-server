@@ -20,7 +20,7 @@ PROJECT_DIR = BASE_DIR
 IS_PRIVATE = True if os.getenv('OMAHA_SERVER_PRIVATE', '').title() == 'True' else False
 
 RAVEN_CONFIG = {
-    'dsn': os.environ.get('RAVEN_DNS'),
+    'dsn': os.environ.get('RAVEN_DSN'),
 }
 
 if os.getenv('OMAHA_ONLY_HTTPS'):

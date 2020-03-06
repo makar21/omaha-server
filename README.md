@@ -174,7 +174,7 @@ app:
         DB_NAME: 'omaha'
         DB_PASSWORD: '**********'
         AWS_STORAGE_BUCKET_NAME: 'omaha-server'
-        RAVEN_DNS: 'http://b3615b99118949dbae3c7d06e93fa74c:b8f1c35d08ef4bcaa6810b4d4cdd6fc0@sentry.example.com/2'
+        RAVEN_DSN: 'http://b3615b99118949dbae3c7d06e93fa74c:b8f1c35d08ef4bcaa6810b4d4cdd6fc0@sentry.example.com/2'
         RAVEN_DSN_STACKTRACE: 'http://637c17c832f44663b381916d4e0cb34d:9df83034cdfb400f9ce7d47ae4a0cc0b@sentry.example.com/5'
         REDIS_HOST: 'redis.example.com'
         DB_PUBLIC_USER: 'omaha_public'
@@ -194,7 +194,7 @@ app:
         DB_NAME: 'omaha'
         DB_PASSWORD: 'omaha_public_password'
         AWS_STORAGE_BUCKET_NAME: 'omaha-server'
-        RAVEN_DNS: 'http://b3615b99118949dbae3c7d06e93fa74c:b8f1c35d08ef4bcaa6810b4d4cdd6fc0@sentry.example.com/2'
+        RAVEN_DSN: 'http://b3615b99118949dbae3c7d06e93fa74c:b8f1c35d08ef4bcaa6810b4d4cdd6fc0@sentry.example.com/2'
         RAVEN_DSN_STACKTRACE: 'http://637c17c832f44663b381916d4e0cb34d:9df83034cdfb400f9ce7d47ae4a0cc0b@sentry.example.com/5'
         REDIS_HOST: 'redis.example.com'
         AWS_ROLE: 'omaha-public'
@@ -217,8 +217,8 @@ app:
 | AWS_ACCESS_KEY_ID         | AWS Access Key       |                            |
 | AWS_SECRET_ACCESS_KEY     | AWS Secret Key       |                            |
 | AWS_STORAGE_BUCKET_NAME   | S3 storage bucket    |                            |
-| RAVEN_DNS                 | Sentry url           |                            |
-| RAVEN_DSN_STACKTRACE      | Sentry url           | RAVEN_DNS                  |
+| RAVEN_DSN                 | Sentry url           |                            |
+| RAVEN_DSN_STACKTRACE      | Sentry url           | RAVEN_DSN                  |
 | REDIS_HOST                | Redis host           | 127.0.0.1                  |
 | REDIS_PORT                | Redis port           | 6379                       |
 | REDIS_DB                  | Redis db             | 1                          |

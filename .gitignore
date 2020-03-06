@@ -23,14 +23,3 @@ target/
 omaha_server/static
 omaha_server/media
 *.zip
-ebs.config
-
-deploy/*.zip
-deploy/ebs.config
-deploy/settings.yml
-
-deploy/google/app.yaml
-!deploy/google/app.yaml.example
-
-### Vagrant ###
-.vagrant/
