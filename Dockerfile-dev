@@ -1,4 +1,4 @@
-FROM brave/omaha-server-base:alpine
+FROM omaha-server-base
 
 # Install Dev and Test requirements
 RUN pipenv install --system --dev

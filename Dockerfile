@@ -1,6 +1,4 @@
-#FROM omaha-server-base
-# TODO: mplesa this might fail
-FROM brave/omaha-server-base:alpine
+FROM omaha-server-base
 
 ADD . $omaha
 
