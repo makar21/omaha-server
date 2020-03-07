@@ -26,13 +26,6 @@ matrix:
     - env:
       - TOX_ENV=coverage
 
-addons:
-  apt:
-    packages:
-    - python-lxml
-    - python-psycopg2
-    - python-dev
-
 env:
   global:
     - HOST_NAME: 'travis-ci'
