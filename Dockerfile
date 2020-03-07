@@ -32,9 +32,9 @@ RUN pip install --no-cache-dir pipenv && \
   pipenv install --system --deploy --clear && \
   rm -rf /root/.cache/pip*
 
-# RUN apt-get remove -q -y apt-utils build-essential gnupg2 wget && \
-#   apt-get autoremove -q -y && \
-#   rm -rf /var/lib/apt/lists/*
+RUN apt-get remove -q -y apt-utils build-essential gnupg2 wget && \
+  apt-get autoremove -q -y && \
+  rm -rf /var/lib/apt/lists/*
 
 FROM base AS stable
 
@@ -53,7 +53,6 @@ RUN \
   chmod go-w /etc/filebeat/filebeat.yml
 
 EXPOSE 80
-EXPOSE 8080
 CMD ["paver", "docker_run"]
 
 
