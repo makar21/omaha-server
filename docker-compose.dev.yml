@@ -23,7 +23,6 @@ services:
     #   - ./:/srv/omaha
     environment:
       DB_HOST: db
-      DB_PORT: 5432
       DB_USER: postgres
       DB_NAME: postgres
       DB_PASSWORD: ''
@@ -33,7 +32,6 @@ services:
       AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY'
       AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
       REDIS_HOST: redis
-      REDIS_PORT: 6379
       OMAHA_SERVER_PRIVATE: 'True'
       AWS_ROLE: 'omaha-private'
       DB_PUBLIC_USER: 'omaha_public'
