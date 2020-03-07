@@ -1,6 +1,6 @@
 DOCKER_REGISTRY_BASE=brave/omaha-server-base
 DOCKER_REGISTRY=brave/omaha-server
-BASE_IMAGE_TAG=alpine
+BASE_IMAGE_TAG=buster
 DEVELOP_IMAGE_TAG=develop
 STABLE_IMAGE_TAG=stable
 DOCKER_COMPOSE=docker-compose -f docker-compose.dev.yml -p dev
@@ -11,7 +11,7 @@ build-dev-web:
 
 .PHONY: build-base
 build-base:
-	docker build -t $(DOCKER_REGISTRY_BASE):$(BASE_IMAGE_TAG) -f Dockerfile-base-alpine .
+	docker build -t $(DOCKER_REGISTRY_BASE):$(BASE_IMAGE_TAG) -f Dockerfile-base .
 
 .PHONY: build-dev
 build-dev:

@@ -10,7 +10,7 @@ services:
     image: redis:3
 
   web:
-    image: brave/omaha-server:develop
+    image: brave/omaha-server:staging
     privileged: true
     ports:
       - '9090:80'
@@ -42,6 +42,8 @@ services:
       # RSYSLOG_ENABLE: 'True'
       secrets:
         - cup_key
+    sysctls:
+      net.core.somaxconn: 1024
 
 secrets:
   cup_key:

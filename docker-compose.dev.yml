@@ -47,3 +47,5 @@ services:
       # ELK_PORT: ''
       # FILEBEAT_DESTINATION: ''
       # RSYSLOG_ENABLE: 'True'
+    sysctls:
+      net.core.somaxconn: 1024      
