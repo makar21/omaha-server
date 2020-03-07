@@ -37,7 +37,6 @@ AWS_PRELOAD_METADATA = True
 AWS_IS_GZIPPED = True
 AWS_DEFAULT_ACL = 'private'
 
-
 FILEBEAT_HOST = os.environ.get('FILEBEAT_HOST', 'localhost')
 FILEBEAT_PORT = os.environ.get('FILEBEAT_PORT', 9021)
 RSYSLOG_ENABLE = True if os.environ.get('RSYSLOG_ENABLE', '').title() == 'True' else False
