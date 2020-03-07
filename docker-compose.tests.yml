@@ -15,7 +15,8 @@ services:
       - '9090:80'
     build:
       context: .
-      dockerfile: Dockerfile-dev
+      dockerfile: Dockerfile
+      target: dev
     links:
       - db
       - redis

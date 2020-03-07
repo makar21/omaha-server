@@ -10,7 +10,7 @@ services:
     image: redis:3
 
   web:
-    image: brave/omaha-server:staging
+    image: brave/omaha-server:stable
     privileged: true
     ports:
       - '9090:80'
@@ -20,7 +20,7 @@ services:
       DB_NAME: postgres
       DB_PASSWORD: ''
       HOST_NAME: '*'
-      DJANGO_SETTINGS_MODULE: 'omaha_server.settings'
+      DJANGO_SETTINGS_MODULE: 'omaha_server.settings_prod'
       AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID'
       AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY'
       AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'

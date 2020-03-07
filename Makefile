@@ -11,15 +11,15 @@ build-dev-web:
 
 .PHONY: build-base
 build-base:
-	docker build -t $(DOCKER_REGISTRY_BASE):$(BASE_IMAGE_TAG) -f Dockerfile-base .
+	docker build -t $(DOCKER_REGISTRY_BASE):$(BASE_IMAGE_TAG) --target base .
 
 .PHONY: build-dev
 build-dev:
-	docker build -t $(DOCKER_REGISTRY):$(DEVELOP_IMAGE_TAG) -f Dockerfile-dev .
+	docker build -t $(DOCKER_REGISTRY):$(DEVELOP_IMAGE_TAG) --target dev .
 
 .PHONY: build-stable
 build-stable:
-	docker build -t $(DOCKER_REGISTRY):$(STABLE_IMAGE_TAG) .
+	docker build -t $(DOCKER_REGISTRY):$(STABLE_IMAGE_TAG) --target stable .
 
 .PHONY: install-dev
 install-dev:

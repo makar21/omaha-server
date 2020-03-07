@@ -1,7 +1,10 @@
-dist: xenial
 language: python
 python:
   - "3.7"
+
+dist: xenial
+sudo: false
+cache: pip
 
 matrix:
   include:
@@ -36,16 +39,12 @@ env:
     - SECRET_KEY: 'SECRET_KEY'
     - GRPC_PYTHON_BUILD_WITH_CYTHON: 1
 
-cache: pip
-sudo: false
-
 services:
   - redis-server
   - postgresql
 
 install:
-  - pip install tox==3.9.0
-  - pip install google-compute-engine
+  - pip install tox-pipenv
 
 script:
   - tox -e $TOX_ENV

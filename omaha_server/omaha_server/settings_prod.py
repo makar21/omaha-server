@@ -30,7 +30,9 @@ EMAIL_BACKEND = 'django_ses.SESBackend'
 EMAIL_SENDER = os.environ.get('EMAIL_SENDER')
 EMAIL_RECIPIENTS = os.environ.get('EMAIL_RECIPIENTS')
 
+MEDIA_URL = ''.join([S3_URL, 'media/'])
 STATIC_URL = ''.join([S3_URL, 'static/'])
+
 AWS_PRELOAD_METADATA = True
 AWS_IS_GZIPPED = True
 AWS_DEFAULT_ACL = 'private'
@@ -115,3 +117,10 @@ if RSYSLOG_ENABLE:
     LOGGING['loggers']['celery.beat']['handlers'].append('rsyslog')
     LOGGING['loggers']['celery.task']['handlers'].append('rsyslog')
     LOGGING['loggers']['limitation']['handlers'].append('rsyslog')
+
+if os.environ.get('CDN_NAME'):
+    CDN_NAME = os.environ.get('CDN_NAME')
+
+CUP_PEM_KEYS = {
+    '1': '/run/secrets/cup_key'
+}

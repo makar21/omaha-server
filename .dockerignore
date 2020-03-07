@@ -1,26 +1,6 @@
-### Python ###
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.cache
-nosetests.xml
-coverage.xml
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Static files
-
-omaha_server/static
-
-.git
-.dockerignore
+*
+!conf
+!omaha_server
+!pavement.py
+!Pipfile
+!Pipfile.lock

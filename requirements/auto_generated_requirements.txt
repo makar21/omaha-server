@@ -35,7 +35,6 @@ funcsigs==1.0.2
 funcy==1.12
 furl==0.4.93
 future==0.16.0
-google-cloud==0.34.0
 idna==2.8
 ipaddress==1.0.22
 jinja2==2.10.1
