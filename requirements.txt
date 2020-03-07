@@ -48,7 +48,7 @@ paver==1.2.4
 persisting-theory==0.2.1
 protobuf-to-dict==0.1.0
 protobuf==3.7.0
-psycopg2==2.7.3.2
+psycopg2-binary==2.8.4
 python-dateutil==2.8.0
 python-magic==0.4.15
 python-nvd3==0.14.2

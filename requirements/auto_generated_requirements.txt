@@ -51,7 +51,7 @@ persisting-theory==0.2.1
 pillow==6.0.0
 protobuf3-to-dict==0.1.5
 protobuf==3.7.1
-psycopg2==2.7.3.2
+psycopg2-binary==2.8.4
 python-dateutil==2.8.0 ; python_version >= '2.7'
 python-magic==0.4.15
 python-nvd3==0.14.2

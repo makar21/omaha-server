@@ -13,5 +13,5 @@ factory-boy==2.8.1
 mock==2.0.0
 tox==2.5.0
 pyquery==1.2.13
-psycopg2==2.7.3.2
+psycopg2-binary==2.8.4
 moto==0.4.24
