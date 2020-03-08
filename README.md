@@ -7,8 +7,6 @@
 [![Apache License, Version 2.0](https://img.shields.io/badge/license-Apache%202.0-red.svg)](https://github.com/brave/omaha-server/blob/master/LICENSE)
 [![](https://badge.imagelayers.io/brave/omaha-server:master.svg)](https://imagelayers.io/?images=brave/omaha-server:master 'Get your own badge on imagelayers.io')
 
-**Omaha server no longer supports Python version 2 and Django 1.11 or lower version. If you need the old version of the application, then check the old_master branch.**
-
 Google Omaha server implementation and Sparkle (mac) feed management.
 
 Currently, our implementation is integrated into the updating processes of several organisations for products that require sophisticated update logic and advanced usage statistics. We provide additional support and further enhancement on a contract basis. For a case study and enquiries please refer [our website](https://www.crystalnix.com/case-study/google-omaha)
@@ -46,7 +44,7 @@ Open `http://{DOCKER_HOST}:9090/admin/`
 
 **Requirements:**
 
-- python 2.7.15
+- python 3.7
 - [pipenv](https://pipenv.readthedocs.io/en/latest/)
 - PostgreSQL
 - Redis
@@ -70,8 +68,7 @@ $ make test
 
 ## Statistics
 
-All statistics are stored in Redis. In order not to lose all data, we recommend to set up the backing up process. The proposed solution uses ElastiCache which supports [automatic backups](https://aws.amazon.com/en/blogs/aws/backup-and-restore-elasticache-redis-nodes/).
-In the case of a self-hosted solution do not forget to set up backups.
+All statistics are stored in Redis. In order not to lose all data, we recommend to set up the backing up process. The proposed solution uses ElastiCache which supports [automatic backups](https://aws.amazon.com/en/blogs/aws/backup-and-restore-elasticache-redis-nodes/). In the case of a self-hosted solution do not forget to set up backups.
 
 Required `userid`. [Including user id into request](https://github.com/Crystalnix/omaha/wiki/Omaha-Client-working-with-protocol#including-user-id-into-request)
 
@@ -111,102 +108,24 @@ A command for generating fake live data for Mac:
 $ ./manage.py generate_fake_mac_live_data Application alpha
 ```
 
-## Deploying Omaha-Server to AWS Elastic Beanstalk
+## Deploying Omaha-Server to AWS
 
 **Requirements:**
 
-- [Elastic Beanstalk command line tools](http://aws.amazon.com/code/6752709412171743)
-- [ebs-deploy](https://github.com/briandilley/ebs-deploy)
 - [Sentry](https://github.com/getsentry/sentry)
-    + [SetUp Sentry as self-hosted solution](https://docs.sentry.io/server/installation/)
-    + [Sentry as SaaS solution](https://www.getsentry.com/)
+		+ [SetUp Sentry as self-hosted solution](https://docs.sentry.io/server/installation/)
+		+ [Sentry as SaaS solution](https://www.getsentry.com/)
 - AWS RDS: [Creating a DB Instance Running the PostgreSQL Database Engine](http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreatePostgreSQLInstance.html)
 - Redis instance in AWS ElasticCache: [Documentation](http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.CreateCluster.Redis.html)
 - AWS S3: [Create a Bucket](http://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html)
 - [AWS Access Key ID and Secret Access Key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html)
-
-### Initializing the Configuration
-
-```shell
-$ cd deploy
-$ cp settings.yml.example settings.yml
-```
-
-To change Omaha-Server configuration, add the settings that you want to modify to the `ebs.config` file. For example:
-
-```yml
-deploy:
-  aws_access_key: '**********'
-  aws_secret_key: '**********'
-  bucket: 'example-ebs-archives'
-  region: 'us-east-1' # http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region
-
-app:
-  name: 'omaha-server'
-  description: 'Omaha Server'
-
-  key_name: 'omaha_server'
-
-  solution_stack_name: '64bit Amazon Linux 2015.03 v1.4.3 running Docker 1.6.2' # optional default: '64bit Amazon Linux 2015.03 v1.4.3 running Docker 1.6.2'
-  InstanceType: 't2.large' # optional default: t2.small http://aws.amazon.com/ec2/instance-types/
-  autoscaling: # optional default: min=1 max=10
-    min: 4
-    max: 20
-  healthcheck_url: '/admin/' # optional default: '/healthcheck/status/'
-
-  environments:
-    omaha-server-private:
-      option_settings: # Configuration Options http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html
-        'aws:autoscaling:launchconfiguration':
-          IamInstanceProfile: 'omaha-public'
-          SecurityGroups: 'omaha-server,omaha-server-private' # If you use Amazon VPC with Elastic Beanstalk so that your instances are launched within a virtual private cloud (VPC), specify security group IDs instead of a security group name.
-
-        'aws:ec2:vpc':
-          VPCId: 'vpc-bb6b9fdf'
-          Subnets: 'subnet-e386d5ba'
-          AssociatePublicIpAddress: 'true'
-
-      environment:
-        OMAHA_SERVER_PRIVATE: 'true'
-        SECRET_KEY: '**********'
-        DB_HOST: 'postgres.example.com'
-        DB_USER: 'omaha'
-        DB_NAME: 'omaha'
-        DB_PASSWORD: '**********'
-        AWS_STORAGE_BUCKET_NAME: 'omaha-server'
-        RAVEN_DSN: 'http://b3615b99118949dbae3c7d06e93fa74c:b8f1c35d08ef4bcaa6810b4d4cdd6fc0@sentry.example.com/2'
-        RAVEN_DSN_STACKTRACE: 'http://637c17c832f44663b381916d4e0cb34d:9df83034cdfb400f9ce7d47ae4a0cc0b@sentry.example.com/5'
-        REDIS_HOST: 'redis.example.com'
-        DB_PUBLIC_USER: 'omaha_public'
-        DB_PUBLIC_PASSWORD: 'omaha_public_password'
-        AWS_ROLE: 'omaha-private'
-
-    omaha-server-public:
-      option_settings:
-        'aws:autoscaling:launchconfiguration':
-          IamInstanceProfile: 'omaha-public'
-          SecurityGroups: 'omaha-server,omaha-server-public'
-      environment:
-        OMAHA_SERVER_PRIVATE: 'false'
-        SECRET_KEY: '**********'
-        DB_HOST: 'postgres.example.com'
-        DB_USER: 'omaha_public'
-        DB_NAME: 'omaha'
-        DB_PASSWORD: 'omaha_public_password'
-        AWS_STORAGE_BUCKET_NAME: 'omaha-server'
-        RAVEN_DSN: 'http://b3615b99118949dbae3c7d06e93fa74c:b8f1c35d08ef4bcaa6810b4d4cdd6fc0@sentry.example.com/2'
-        RAVEN_DSN_STACKTRACE: 'http://637c17c832f44663b381916d4e0cb34d:9df83034cdfb400f9ce7d47ae4a0cc0b@sentry.example.com/5'
-        REDIS_HOST: 'redis.example.com'
-        AWS_ROLE: 'omaha-public'
-        DJANGO_SETTINGS_MODULE: 'omaha_server.settings_prod'
-```
 
 #### Environment variables
 
 | Environment variable name |    Description       |       Default value        |
 |---------------------------|----------------------|----------------------------|
 | APP_VERSION               | App version          | DEV                        |
-| DJANGO_SETTINGS_MODULE    |                      | omaha_server.settings_prod |
+| DJANGO_SETTINGS_MODULE    |                      | omaha_server.settings      |
 | SECRET_KEY                | Django SECRET_KEY    |                            |
 | HOST_NAME                 | Eb app host name     |                            |
 | DB_HOST                   | DB Host              | 127.0.0.1                  |
@@ -225,6 +144,7 @@ app:
 | REDIS_STAT_PORT           | For statistics       | REDIS_PORT                 |
 | REDIS_STAT_HOST           |                      | REDIS_HOST                 |
 | REDIS_STAT_DB             |                      | 15                         |
+| STATISTICS_ENABLE         |                      | True                       |
 | UWSGI_PROCESSES           |                      |                            |
 | UWSGI_THREADS             |                      |                            |
 | OMAHA_SERVER_PRIVATE      | Is private server    | False                      |
@@ -253,35 +173,6 @@ app:
 - [uWSGI Options](http://uwsgi-docs.readthedocs.org/en/latest/Options.html) & [Environment variables](http://uwsgi-docs.readthedocs.org/en/latest/Configuration.html#environment-variables)
 - [Sentry](https://github.com/getsentry/sentry)
 - Sentry API key is stored on the way Sentry Organization page -> API Keys
-
-### Initialize your ElasticBeanstalk application
-
-```shell
-# generate config file
-$ python main.py
-$ ebs-deploy init
-```
-
-### Deploy your application
-
-```shell
-$ ebs-deploy deploy -e omaha-server-dev
-```
-
-#### Enable HTTPS
-
-1. [Add SSL Certificate for Elastic Load Balancing](https://github.com/brave/omaha-server/wiki/SSL-Certificate-for-Elastic-Load-Balancing)
-2. Next, just add the following snippet to your file `deploy/settings.yml`
-
-  ```yml
-  # http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html#command-options-general-elbloadbalancer
-  'aws:elb:loadbalancer':
-    LoadBalancerHTTPSPort: 443
-    LoadBalancerSSLPortProtocol: HTTPS
-    SSLCertificateId: arn:aws:acm:us-east-1:your-ssl-id # ToDo: change on your SSL ID
-  ```
-3. Finally, in the case if you want to redirect all HTTP traffic to HTTPS, you can add `OMAHA_ONLY_HTTPS: true` to environment variables in the *environment* section.
-*Warning:* Please, don't activate the redirection of HTTP to HTTPS if you don't enable HTTPS. It will lead to that an Omaha server won't be accessible.
 
 #### Enable Client Update Protocol v2
 

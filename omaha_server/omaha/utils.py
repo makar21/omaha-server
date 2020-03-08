@@ -29,12 +29,14 @@ from django_redis import get_redis_connection
 from redis.exceptions import WatchError
 from django.utils import timezone
 
-from omaha.settings import KEY_PREFIX, KEY_LAST_ID
+from omaha.settings import KEY_PREFIX, KEY_LAST_ID, STATISTICS_ENABLE
 from omaha.models import Platform
 from sparkle.models import SparkleVersion
 __all__ = ['get_sec_since_midnight', 'get_id']
 
-redis = get_redis_connection('statistics')
+
+if STATISTICS_ENABLE:
+    redis = get_redis_connection('statistics')
 
 
 def get_sec_since_midnight(date):

@@ -47,11 +47,12 @@ from sparkle.models import SparkleVersion
 
 __all__ = ['userid_counting', 'is_user_active']
 
-setup_redis('default',
-            settings.REDIS_STAT_HOST,
-            settings.REDIS_STAT_PORT,
-            db=settings.REDIS_STAT_DB,
-            password=settings.REDIS_PASSWORD)
+if settings.STATISTICS_ENABLE:
+    setup_redis('default',
+                settings.REDIS_STAT_HOST,
+                settings.REDIS_STAT_PORT,
+                db=settings.REDIS_STAT_DB,
+                password=settings.REDIS_PASSWORD)
 
 
 def userid_counting(userid, apps_list, platform, now=None):
@@ -326,6 +327,9 @@ def parse_events(events):
 
 @transaction.atomic
 def collect_statistics(request, ip=None):
+    if not settings.STATISTICS_ENABLE:
+        return
+
     userid = request.get('userid')
     apps = request.findall('app')
 

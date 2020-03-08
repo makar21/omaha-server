@@ -24,10 +24,12 @@ from bitmapist import mark_event, MonthEvents
 from django.utils import timezone
 
 from omaha.statistics import get_id, is_new_install, redis
-from omaha.settings import DEFAULT_CHANNEL
+from omaha.settings import DEFAULT_CHANNEL, STATISTICS_ENABLE
 
 
 def collect_statistics(request, appid, channel):
+    if not STATISTICS_ENABLE:
+        return
     deviceID = request.GET.get('deviceID')
     version = request.GET.get('appVersionShort')
     if not deviceID or not version:

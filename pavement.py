@@ -64,11 +64,6 @@ def up_local_dev_server():
 
 
 @task
-def deploy_dev():
-    sh('ebs-deploy deploy -e omaha-server-dev', cwd='omaha_server')
-
-
-@task
 def collectstatic():
     sh('./manage.py collectstatic --noinput', cwd='omaha_server')
 

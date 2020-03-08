@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 django-debug-toolbar = "==1.11.0"
 django-debug-panel = "*"
-ebs-deploy = "==2.0.1"
 bumpversion = "==0.5.3"
 django-nose = "==1.4.6"
 nose = "*"

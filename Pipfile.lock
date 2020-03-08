@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8922891afeae4cf87033df9817b97734985e02f469d3e04a587ecf7084983fe0"
+            "sha256": "bee90b2bf6dcc7e1bbe219dfdc5464fad06fed48fa35a84b90f7e6baa84905f1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -918,13 +918,6 @@
             ],
             "version": "==0.16"
         },
-        "ebs-deploy": {
-            "hashes": [
-                "sha256:1695240ba2f9dec47a51a1b4b9e8e964a93c1ce321537b065cfa5b5941ba1d7f"
-            ],
-            "index": "pypi",
-            "version": "==2.0.1"
-        },
         "ecdsa": {
             "hashes": [
                 "sha256:40d002cf360d0e035cf2cb985e1308d41aaa087cbfc135b2dc2d844296ea546c",
@@ -1325,10 +1318,10 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:0c04c7e8e0314470b4c2b43740ff68be1c62bb3fdef8309341ff1daea60d49d1",
-                "sha256:1f0369d068d9761b5c1ed7b44dad1ec124727eb10bc7f4aaefbba0cdca3bd924"
+                "sha256:5eba85dfa176fde0425b9b3042ed83f05a1b6309a616b8a3e2a9a94f4bfa27b7",
+                "sha256:99f131be2f90ff2a8fd711261a27845b6c50fc008bef815e710c7fa844eb1467"
             ],
-            "version": "==20.0.8"
+            "version": "==20.0.9"
         },
         "websocket-client": {
             "hashes": [

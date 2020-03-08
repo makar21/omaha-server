@@ -202,18 +202,22 @@ REDIS_STAT_PORT = os.environ.get('REDIS_STAT_PORT', REDIS_PORT)
 REDIS_STAT_HOST = os.environ.get('REDIS_STAT_HOST', REDIS_HOST)
 REDIS_STAT_DB = os.environ.get('REDIS_STAT_DB', 15)
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
-            REDIS_PORT=REDIS_PORT,
-            REDIS_HOST=REDIS_HOST,
-            REDIS_DB=os.environ.get('REDIS_DB', 1)),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    },
-    'statistics': {
+CACHES = {}
+
+CACHES['default'] = {
+    'BACKEND': 'django_redis.cache.RedisCache',
+    'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
+        REDIS_PORT=REDIS_PORT,
+        REDIS_HOST=REDIS_HOST,
+        REDIS_DB=os.environ.get('REDIS_DB', 1)),
+    'OPTIONS': {
+        'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+    }
+}
+
+STATISTICS_ENABLE = True if os.environ.get('STATISTICS_ENABLE', '').title() == 'False' else True
+if STATISTICS_ENABLE:
+    CACHES['statistics'] = {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
             REDIS_PORT=REDIS_STAT_PORT,
@@ -223,8 +227,8 @@ CACHES = {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
-}
 
+# TODO: mplesa change sessions storage to local
 SESSION_CACHE_ALIAS = 'default'
 
 STATICFILES_FINDERS = ("django.contrib.staticfiles.finders.FileSystemFinder",
@@ -290,7 +294,7 @@ if IS_PRIVATE:
     }
 
 # Cache
-
+# TODO: mplesa see if this is needed
 CACHEOPS_REDIS = {
     'host': REDIS_HOST,
     'port': REDIS_PORT,
