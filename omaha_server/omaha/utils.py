@@ -25,17 +25,18 @@ import calendar
 from django.db.models import Q
 
 from singledispatch import singledispatch
+from django.conf import settings
 from django_redis import get_redis_connection
 from redis.exceptions import WatchError
 from django.utils import timezone
 
-from omaha.settings import KEY_PREFIX, KEY_LAST_ID, STATISTICS_ENABLE
+from omaha.settings import KEY_PREFIX, KEY_LAST_ID
 from omaha.models import Platform
 from sparkle.models import SparkleVersion
 __all__ = ['get_sec_since_midnight', 'get_id']
 
 
-if STATISTICS_ENABLE:
+if settings.STATISTICS_ENABLE:
     redis = get_redis_connection('statistics')
 
 

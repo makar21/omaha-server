@@ -21,14 +21,16 @@ the License.
 from functools import partial
 
 from bitmapist import mark_event, MonthEvents
+from django.conf import settings
 from django.utils import timezone
 
+
 from omaha.statistics import get_id, is_new_install, redis
-from omaha.settings import DEFAULT_CHANNEL, STATISTICS_ENABLE
+from omaha.settings import DEFAULT_CHANNEL
 
 
 def collect_statistics(request, appid, channel):
-    if not STATISTICS_ENABLE:
+    if not settings.STATISTICS_ENABLE:
         return
     deviceID = request.GET.get('deviceID')
     version = request.GET.get('appVersionShort')

@@ -36,6 +36,7 @@ services:
       DB_PUBLIC_USER: 'omaha_public'
       DB_PUBLIC_PASSWORD: 'omaha_public_password'
       LOG_NGINX_TO_FILEBEAT: 'False'
+      STATISTICS_ENABLE: 'False'
       # UWSGI_PROCESSES: 10
       # UWSGI_THREADS: 8
       # FILEBEAT_HOST: 'localhost'
@@ -45,4 +46,4 @@ services:
       # FILEBEAT_DESTINATION: ''
       # RSYSLOG_ENABLE: 'True'
     sysctls:
-      net.core.somaxconn: 1024      
+      net.core.somaxconn: 1024
