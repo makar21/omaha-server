@@ -38,6 +38,8 @@ __all__ = ['get_sec_since_midnight', 'get_id']
 
 if settings.STATISTICS_ENABLE:
     redis = get_redis_connection('statistics')
+else:
+    redis = None
 
 
 def get_sec_since_midnight(date):

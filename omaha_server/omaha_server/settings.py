@@ -55,18 +55,20 @@ TEMPLATES = [
 
 APP_VERSION = "0.7.3"
 
+STATISTICS_ENABLE = False if os.environ.get('STATISTICS_ENABLE', '').title() == 'False' else True
+
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Omaha Server [{}]'.format(APP_VERSION),
-    'MENU': (
+    'MENU': tuple(filter(None, [
         # 'sites',
         {'app': 'omaha', 'label': 'Omaha', 'icon': 'icon-refresh'},
         {'app': 'sparkle', 'label': 'Sparkle', 'icon': 'icon-circle-arrow-down'},
         {'app': 'crash', 'label': 'Crash reports', 'icon': 'icon-fire'},
         {'app': 'feedback', 'label': 'Feedbacks', 'icon': 'icon-comment'},
-        {'label': 'Statistics', 'url': 'omaha_statistics', 'icon': 'icon-star'},
+        {'label': 'Statistics', 'url': 'omaha_statistics', 'icon': 'icon-star'} if STATISTICS_ENABLE else None,
         {'label': 'Preferences', 'url': reverse_lazy('set_preferences', args=['']), 'icon': 'icon-wrench'},
         {'label': 'Storage monitoring', 'url': 'monitoring', 'icon': 'icon-hdd'},
-    ),
+    ])),
     'CONFIRM_UNSAVED_CHANGES': False,
 }
 
@@ -215,7 +217,6 @@ CACHES['default'] = {
     }
 }
 
-STATISTICS_ENABLE = False if os.environ.get('STATISTICS_ENABLE', '').title() == 'False' else True
 if STATISTICS_ENABLE:
     CACHES['statistics'] = {
         'BACKEND': 'django_redis.cache.RedisCache',
