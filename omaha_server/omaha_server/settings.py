@@ -215,7 +215,7 @@ CACHES['default'] = {
     }
 }
 
-STATISTICS_ENABLE = True if os.environ.get('STATISTICS_ENABLE', '').title() == 'False' else True
+STATISTICS_ENABLE = False if os.environ.get('STATISTICS_ENABLE', '').title() == 'False' else True
 if STATISTICS_ENABLE:
     CACHES['statistics'] = {
         'BACKEND': 'django_redis.cache.RedisCache',
