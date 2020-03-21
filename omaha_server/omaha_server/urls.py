@@ -25,10 +25,7 @@ router.register(r'crash_report', crash.api.CrashViewSet)
 router.register(r'feedback/description', feedback.api.FeedbackDescriptionViewSet, 'api-feedback-description')
 router.register(r'feedback', feedback.api.FeedbackViewSet, 'api-feedback')
 router.register(r'partialupdate', omaha.api.PartialUpdateViewSet)
-
-if settings.STATISTICS_ENABLE:
-    # TODO: mplesa check this works
-    router.register(r'statistics/live', omaha.api.StatisticsVersionsLiveView, 'api-statistics-live')
+router.register(r'statistics/live', omaha.api.StatisticsVersionsLiveView, 'api-statistics-live')
 
 urlpatterns = [
     url(r'', include('omaha.urls')),
@@ -44,23 +41,20 @@ if settings.IS_PRIVATE:
     urlpatterns += [
         url(r'', include('downloads.urls')),
         url(r'^admin/', admin.site.urls),
+        url(r'^api/statistics/channels/(?P<app_name>[a-zA-Z0-9_ -]+)/$', omaha.api.StatisticsChannelsView.as_view(),
+            name="api-statistics-channels"),
+        url(r'^api/statistics/versions/(?P<app_name>[a-zA-Z0-9_ -]+)/$', omaha.api.StatisticsVersionsView.as_view(),
+            name="api-statistics-versions"),
+        url(r'^api/statistics/months/(?P<app_name>[a-zA-Z0-9_ -]+)/$', omaha.api.StatisticsMonthsDetailView.as_view(),
+            name="api-statistics-months-detail"),
+        url(r'^api/statistics/live/(?P<app_name>[a-zA-Z0-9_ -]+)/$', omaha.api.StatisticsVersionsLiveView.as_view(),
+            name="api-statistics-live"),
         url(r'^api/version', omaha.api.ServerVersionView.as_view(), name='api-version'),
         url(r'^api/', include(router.urls)),
         url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
         url(r'select2_userid_filter/', omaha.views.FilterByUserIDResponseView.as_view(),
             name='select2_userid_filter'),
     ]
-    if settings.STATISTICS_ENABLE:
-        urlpatterns += [
-            url(r'^api/statistics/channels/(?P<app_name>[a-zA-Z0-9_ -]+)/$', omaha.api.StatisticsChannelsView.as_view(),
-                name="api-statistics-channels"),
-            url(r'^api/statistics/versions/(?P<app_name>[a-zA-Z0-9_ -]+)/$', omaha.api.StatisticsVersionsView.as_view(),
-                name="api-statistics-versions"),
-            url(r'^api/statistics/months/(?P<app_name>[a-zA-Z0-9_ -]+)/$', omaha.api.StatisticsMonthsDetailView.as_view(),
-                name="api-statistics-months-detail"),
-            url(r'^api/statistics/live/(?P<app_name>[a-zA-Z0-9_ -]+)/$', omaha.api.StatisticsVersionsLiveView.as_view(),
-                name="api-statistics-live"),
-        ]
 
 # if settings.DEBUG:
 #     try:

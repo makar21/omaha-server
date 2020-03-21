@@ -55,8 +55,6 @@ TEMPLATES = [
 
 APP_VERSION = "0.7.3"
 
-STATISTICS_ENABLE = False if os.environ.get('STATISTICS_ENABLE', '').title() == 'False' else True
-
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Omaha Server [{}]'.format(APP_VERSION),
     'MENU': tuple(filter(None, [
@@ -65,7 +63,7 @@ SUIT_CONFIG = {
         {'app': 'sparkle', 'label': 'Sparkle', 'icon': 'icon-circle-arrow-down'},
         {'app': 'crash', 'label': 'Crash reports', 'icon': 'icon-fire'},
         {'app': 'feedback', 'label': 'Feedbacks', 'icon': 'icon-comment'},
-        {'label': 'Statistics', 'url': 'omaha_statistics', 'icon': 'icon-star'} if STATISTICS_ENABLE else None,
+        {'label': 'Statistics', 'url': 'omaha_statistics', 'icon': 'icon-star'},
         {'label': 'Preferences', 'url': reverse_lazy('set_preferences', args=['']), 'icon': 'icon-wrench'},
         {'label': 'Storage monitoring', 'url': 'monitoring', 'icon': 'icon-hdd'},
     ])),
@@ -217,17 +215,16 @@ CACHES['default'] = {
     }
 }
 
-if STATISTICS_ENABLE:
-    CACHES['statistics'] = {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
-            REDIS_PORT=REDIS_STAT_PORT,
-            REDIS_HOST=REDIS_STAT_HOST,
-            REDIS_DB=REDIS_STAT_DB),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
+CACHES['statistics'] = {
+    'BACKEND': 'django_redis.cache.RedisCache',
+    'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
+        REDIS_PORT=REDIS_STAT_PORT,
+        REDIS_HOST=REDIS_STAT_HOST,
+        REDIS_DB=REDIS_STAT_DB),
+    'OPTIONS': {
+        'CLIENT_CLASS': 'django_redis.client.DefaultClient',
     }
+}
 
 # TODO: mplesa change sessions storage to local
 SESSION_CACHE_ALIAS = 'default'
@@ -294,8 +291,8 @@ if IS_PRIVATE:
         },
     }
 
-# Cache
 # TODO: mplesa see if this is needed
+# Cache
 CACHEOPS_REDIS = {
     'host': REDIS_HOST,
     'port': REDIS_PORT,

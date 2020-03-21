@@ -35,10 +35,7 @@ from omaha.models import Platform
 from sparkle.models import SparkleVersion
 __all__ = ['get_sec_since_midnight', 'get_id']
 
-if settings.STATISTICS_ENABLE:
-    redis = get_redis_connection('statistics')
-else:
-    redis = None
+redis = get_redis_connection('statistics')
 
 
 def get_sec_since_midnight(date):

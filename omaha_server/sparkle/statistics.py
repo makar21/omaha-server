@@ -30,8 +30,6 @@ from omaha.settings import DEFAULT_CHANNEL
 
 
 def collect_statistics(request, appid, channel):
-    if not settings.STATISTICS_ENABLE:
-        return
     deviceID = request.GET.get('deviceID')
     version = request.GET.get('appVersionShort')
     if not deviceID or not version:

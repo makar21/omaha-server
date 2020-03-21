@@ -144,7 +144,6 @@ $ ./manage.py generate_fake_mac_live_data Application alpha
 | REDIS_STAT_PORT           | For statistics       | REDIS_PORT                 |
 | REDIS_STAT_HOST           |                      | REDIS_HOST                 |
 | REDIS_STAT_DB             |                      | 15                         |
-| STATISTICS_ENABLE         |                      | True                       |
 | UWSGI_PROCESSES           |                      |                            |
 | UWSGI_THREADS             |                      |                            |
 | OMAHA_SERVER_PRIVATE      | Is private server    | False                      |

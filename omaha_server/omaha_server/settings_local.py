@@ -13,7 +13,6 @@ STATIC_URL = '/static/'
 
 SITE_ID = 1
 
-# TODO: mplesa uncomment
 # INSTALLED_APPS += (
 #     'debug_toolbar',
 #     'debug_panel',
