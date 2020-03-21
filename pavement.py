@@ -21,10 +21,11 @@ the License.
 import os
 
 from raven import Client
+client = Client(os.environ.get('RAVEN_DSN'))
+
 from paver.easy import task, needs
 from paver.easy import sh
 
-client = Client(os.environ.get('RAVEN_DSN'))
 
 @task
 def test():
