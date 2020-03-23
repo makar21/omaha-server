@@ -8,7 +8,7 @@ from furl import furl
 
 from .settings import *
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = (os.environ.get('HOST_NAME'), '*')
 SECRET_KEY = os.environ.get('SECRET_KEY') or crypto.get_random_string(50)
