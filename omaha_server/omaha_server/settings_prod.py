@@ -8,7 +8,7 @@ from furl import furl
 
 from .settings import *
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = (os.environ.get('HOST_NAME'), '*')
 SECRET_KEY = os.environ.get('SECRET_KEY') or crypto.get_random_string(50)
@@ -45,7 +45,7 @@ CELERYD_HIJACK_ROOT_LOGGER = False
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'root': {
         'level': 'INFO',
         'handlers': ['console'],
@@ -60,12 +60,12 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         },
         'rsyslog': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.handlers.SysLogHandler',
             'formatter': 'filebeat_format',
             'address': '/dev/log'
@@ -73,12 +73,12 @@ LOGGING = {
     },
     'loggers': {
         'django.db.backends': {
-            'level': 'ERROR',
+            'level': 'WARNING',
             'handlers': ['console'],
             'propagate': False,
         },
         'django.request': {
-            'level': 'ERROR',
+            'level': 'WARNING',
             'handlers': ['console'],
             'propagate': False,
         },
