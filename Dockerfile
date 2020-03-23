@@ -24,7 +24,6 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     supervisor \
 # TODO: mplesa revert
     uwsgi-plugin-python && \
-    uwsgi-plugin-python3 && \
   rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv/omaha
