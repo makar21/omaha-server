@@ -37,10 +37,10 @@ services:
       # ELK_PORT: ''
       # FILEBEAT_DESTINATION: ''
       # RSYSLOG_ENABLE: 'True'
-      secrets:
-        - cup_key
     sysctls:
       net.core.somaxconn: 1024
+    secrets:
+      - cup_key
 
 secrets:
   cup_key:

@@ -129,6 +129,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'omaha_server.middlewares.CUP2Middleware',
 ]
 
 if IS_PRIVATE:
@@ -138,7 +139,6 @@ if IS_PRIVATE:
         'django.contrib.messages.middleware.MessageMiddleware',
         'omaha_server.middlewares.LoggingMiddleware',
         'omaha_server.middlewares.TimezoneMiddleware',
-        'omaha_server.middlewares.CUP2Middleware',
      ] + MIDDLEWARE
     # TODO: mplesa this might fail
 
