@@ -49,7 +49,7 @@ class CUP2Middleware(MiddlewareMixin):
                 return HttpResponse(msg, status=400, content_type="text/html; charset=utf-8")
 
     def process_response(self, request, response):
-        if getattr(settings, 'CUP_REQUEST_VALIDATION', False) and  self.is_cup2_request(request) and response.status_code // 100 == 2:
+        if getattr(settings, 'CUP_REQUEST_VALIDATION', False) and self.is_cup2_request(request) and response.status_code // 100 == 2:
             self.sign_cup2_response(request, response)
 
         return response
