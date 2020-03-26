@@ -35,8 +35,9 @@ class CUP2Middleware(MiddlewareMixin):
         self.get_response = get_response
         self.sk = {}
         # Loading signature keys to memory
-        for keyid, private_key in settings.CUP_PEM_KEYS.items():
-            self.sk[keyid] = SigningKey.from_pem(open(private_key).read())
+        if getattr(settings, 'CUP_REQUEST_VALIDATION', False):
+            for keyid, private_key in settings.CUP_PEM_KEYS.items():
+                self.sk[keyid] = SigningKey.from_pem(open(private_key).read())
 
     def process_request(self, request):
         if getattr(settings, 'CUP_REQUEST_VALIDATION', False) and self.is_cup2_request(request):

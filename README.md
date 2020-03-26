@@ -127,7 +127,7 @@ $ ./manage.py generate_fake_mac_live_data Application alpha
 | APP_VERSION               | App version          | DEV                        |
 | DJANGO_SETTINGS_MODULE    |                      | omaha_server.settings      |
 | SECRET_KEY                | Django SECRET_KEY    |                            |
-| HOST_NAME                 | Eb app host name     |                            |
+| HOST_NAME                 | App host name        |                            |
 | DB_HOST                   | DB Host              | 127.0.0.1                  |
 | DB_USER                   | DB User              | postgres                   |
 | DB_NAME                   | DB Name              | postgres                   |
