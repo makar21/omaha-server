@@ -22,7 +22,7 @@ import os
 
 try:
   from raven import Client
-  client = Client(os.environ.get('RAVEN_DNS'))
+  client = Client(os.environ.get('RAVEN_DSN'))
 except ImportError:
   print("[WARN] raven python module not found")
 
@@ -65,11 +65,6 @@ def up_local_dev_server():
     sh('docker-compose -f docker-compose.dev.yml -p dev up -d db')
     sh('docker-compose -f docker-compose.dev.yml -p dev up -d web')
     print("""Open http://{DOCKER_HOST}:9090/admin/\n username: admin\n password: admin""")
-
-
-@task
-def deploy_dev():
-    sh('ebs-deploy deploy -e omaha-server-dev', cwd='omaha_server')
 
 
 @task
@@ -183,7 +178,7 @@ def docker_run_test():
 def run_test_in_docker():
     try:
         sh('docker-compose -f docker-compose.tests.yml -p omaha_testing run --rm sut paver docker_run_test')
-    except:
+    except Exception as e:
         pass
     sh('docker-compose -f docker-compose.tests.yml -p omaha_testing stop')
     sh('docker-compose -f docker-compose.tests.yml -p omaha_testing rm --force')

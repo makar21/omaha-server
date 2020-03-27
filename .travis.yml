@@ -1,8 +1,8 @@
 language: python
-dist: trusty
+dist: xenial
 matrix:
   allow_failures:
-    - env: TOX_ENV=py34
+    - env: TOX_ENV=py27
   include:
     - python: "2.7"
       env:
@@ -22,8 +22,6 @@ matrix:
         - PATH_TO_TEST=omaha.tests.test_public
         - DJANGO_SETTINGS_MODULE=omaha_server.settings_test_postgres
         - OMAHA_SERVER_PRIVATE=False
-    - python: "3.4"
-      env: TOX_ENV=py34
     - python: "2.7"
       env: TOX_ENV=coverage
 
@@ -48,6 +46,7 @@ env:
 
 services:
   - redis-server
+  - postgresql
 
 install:
   - pip install tox==2.2.1

@@ -23,7 +23,9 @@ AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 S3_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 
+MEDIA_URL = ''.join([S3_URL, 'media/'])
 STATIC_URL = ''.join([S3_URL, 'static/'])
+
 AWS_PRELOAD_METADATA = True
 AWS_IS_GZIPPED = True
 AWS_DEFAULT_ACL = 'private'
@@ -68,7 +70,7 @@ LOGGING = {
             'propagate': False,
         },
         'celery.beat': {
-            'level': 'INFO',
+            'level': 'WARNING',
             'handlers': ['console'],
             'propagate': False,
         },
@@ -84,3 +86,11 @@ if FILEBEAT_HOST and FILEBEAT_PORT:
     }
     LOGGING['root']['handlers'].append('filebeat')
     LOGGING['loggers']['django.request']['handlers'].append('filebeat')
+
+if os.environ.get('CDN_NAME'):
+    CDN_NAME = os.environ.get('CDN_NAME')
+
+if CUP_REQUEST_VALIDATION:
+    CUP_PEM_KEYS = {
+        '1': '/run/secrets/cup_key'
+    }

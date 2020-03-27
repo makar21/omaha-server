@@ -21,7 +21,7 @@ PROJECT_DIR = BASE_DIR
 IS_PRIVATE = True if os.getenv('OMAHA_SERVER_PRIVATE', '').title() == 'True' else False
 
 RAVEN_CONFIG = {
-    'dsn': os.environ.get('RAVEN_DNS'),
+    'dsn': os.environ.get('RAVEN_DSN'),
 }
 
 if os.getenv('OMAHA_ONLY_HTTPS'):
@@ -51,7 +51,7 @@ TEMPLATES = [
     },
 ]
 
-APP_VERSION = "0.6.6"
+APP_VERSION = "0.6.7"
 
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Omaha Server [{}]'.format(APP_VERSION),
@@ -327,7 +327,7 @@ AUTO_RENDER_SELECT2_STATICS = False
 
 # Client Update Protocol
 
-CUP_REQUEST_VALIDATION = os.environ.get('CUP_REQUEST_VALIDATION', False)
+CUP_REQUEST_VALIDATION = True if os.environ.get('CUP_REQUEST_VALIDATION', 'True').title() == 'True' else False
 
 CUP_PEM_KEYS = {
     # 'keyid': 'private_key_path',

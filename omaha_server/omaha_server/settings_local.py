@@ -2,10 +2,10 @@
 
 from .settings import *
 
-DEBUG = True
-TEMPLATE_DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ('localhost', '127.0.0.1', '.xip.io',)
+ALLOWED_HOSTS = ('localhost', '127.0.0.1', '.xip.io', HOST_NAME)
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
@@ -48,7 +48,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
     'SHOW_TOOLBAR_CALLBACK': 'omaha_server.utils.show_toolbar',
 }
-
 
 CRASH_S3_MOUNT_PATH = os.environ.get('CRASH_S3_MOUNT_PATH', BASE_DIR)
 CRASH_SYMBOLS_PATH = os.path.join(CRASH_S3_MOUNT_PATH, os.path.join(MEDIA_ROOT, 'symbols'))
