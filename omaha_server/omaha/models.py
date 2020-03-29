@@ -277,7 +277,6 @@ class Request(models.Model):
     created = models.DateTimeField(db_index=True, default=datetime_now, editable=False, blank=True)
     ip = models.GenericIPAddressField(blank=True, null=True)
 
-
 class Event(models.Model):
     eventtype = models.PositiveSmallIntegerField(db_index=True)
     eventresult = models.PositiveSmallIntegerField()
@@ -285,7 +284,7 @@ class Event(models.Model):
     extracode1 = models.IntegerField(null=True, blank=True)
     download_time_ms = models.PositiveIntegerField(null=True, blank=True)
     downloaded = models.PositiveIntegerField(null=True, blank=True)
-    total = models.PositiveIntegerField(null=True, blank=True)
+    total = models.IntegerField(null=True, blank=True)
     update_check_time_ms = models.PositiveIntegerField(null=True, blank=True)
     install_time_ms = models.PositiveIntegerField(null=True, blank=True)
     source_url_index = models.URLField(null=True, blank=True)

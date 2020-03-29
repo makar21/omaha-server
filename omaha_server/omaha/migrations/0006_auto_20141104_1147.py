@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('extracode1', models.IntegerField(null=True, blank=True)),
                 ('download_time_ms', models.PositiveIntegerField(null=True, blank=True)),
                 ('downloaded', models.PositiveIntegerField(null=True, blank=True)),
-                ('total', models.PositiveIntegerField(null=True, blank=True)),
+                ('total', models.IntegerField(null=True, blank=True)),
                 ('update_check_time_ms', models.PositiveIntegerField(null=True, blank=True)),
                 ('install_time_ms', models.PositiveIntegerField(null=True, blank=True)),
                 ('source_url_index', models.URLField(null=True, blank=True)),
