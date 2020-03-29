@@ -49,7 +49,7 @@ class UpdateView(View):
         try:
             response = build_response(request.body, ip=get_client_ip(request))
         except XMLSyntaxError:
-            logger.error('UpdateView', exc_info=True, extra=dict(request=request))
+            logger.error('UpdateView')
             msg = b"""<?xml version="1.0" encoding="utf-8"?>
 <data>
     <message>
