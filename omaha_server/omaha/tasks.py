@@ -47,7 +47,6 @@ logger = logging.getLogger(__name__)
 
 @app.task(ignore_result=True)
 def collect_statistics(request, ip=None):
-    return
     statistics.collect_statistics(parse_request(request), ip=ip)
 
 
