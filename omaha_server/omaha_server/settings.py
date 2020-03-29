@@ -61,7 +61,7 @@ SUIT_CONFIG = {
         {'app': 'sparkle', 'label': 'Sparkle', 'icon': 'icon-circle-arrow-down'},
         {'app': 'crash', 'label': 'Crash reports', 'icon': 'icon-fire'},
         {'app': 'feedback', 'label': 'Feedbacks', 'icon': 'icon-comment'},
-        {'label': 'Statistics', 'url': 'omaha_statistics', 'icon': 'icon-star'},
+        # {'label': 'Statistics', 'url': 'omaha_statistics', 'icon': 'icon-star'},
         {'label': 'Preferences', 'url': reverse_lazy('set_preferences', args=['']), 'icon': 'icon-wrench'},
         {'label': 'Storage monitoring', 'url': 'monitoring', 'icon': 'icon-hdd'},
     ),
