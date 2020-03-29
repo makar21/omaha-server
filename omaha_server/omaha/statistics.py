@@ -342,6 +342,7 @@ def parse_events(events):
 
 @transaction.atomic
 def collect_statistics(request, ip=None):
+    return
     userid = request.get('userid')
     apps = request.findall('app')
 
