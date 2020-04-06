@@ -53,7 +53,7 @@ TEMPLATES = [
     },
 ]
 
-APP_VERSION = "0.7.2"
+APP_VERSION = "0.7.3"
 
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Omaha Server [{}]'.format(APP_VERSION),
@@ -330,8 +330,7 @@ REST_FRAMEWORK = {
 AUTO_RENDER_SELECT2_STATICS = False
 
 # Client Update Protocol
-
-CUP_REQUEST_VALIDATION = os.environ.get('CUP_REQUEST_VALIDATION', False)
+CUP_REQUEST_VALIDATION = True if os.environ.get('CUP_REQUEST_VALIDATION', 'True').title() == 'True' else False
 
 CUP_PEM_KEYS = {
     # 'keyid': 'private_key_path',

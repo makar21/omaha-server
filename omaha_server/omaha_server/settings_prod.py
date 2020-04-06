@@ -120,7 +120,8 @@ if RSYSLOG_ENABLE:
 if os.environ.get('CDN_NAME'):
     CDN_NAME = os.environ.get('CDN_NAME')
 
-# TODO: mplesa might need an if here
-CUP_PEM_KEYS = {
-    '1': '/run/secrets/cup_key'
-}
+
+if CUP_REQUEST_VALIDATION:
+    CUP_PEM_KEYS = {
+        '1': '/run/secrets/cup_key'
+    }
