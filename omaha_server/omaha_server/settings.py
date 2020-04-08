@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 from datetime import timedelta
 
-from django.core.urlresolvers import reverse_lazy
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+from django.urls import reverse_lazy
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_DIR = BASE_DIR
@@ -21,7 +20,7 @@ PROJECT_DIR = BASE_DIR
 IS_PRIVATE = True if os.getenv('OMAHA_SERVER_PRIVATE', '').title() == 'True' else False
 
 RAVEN_CONFIG = {
-    'dsn': os.environ.get('RAVEN_DNS'),
+    'dsn': os.environ.get('RAVEN_DSN'),
 }
 
 if os.getenv('OMAHA_ONLY_HTTPS'):
@@ -43,19 +42,22 @@ TEMPLATES = [
         ],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': TCP + [
-                'django.core.context_processors.request',
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
                 'absolute.context_processors.absolute',
             ],
         },
     },
 ]
 
-APP_VERSION = "0.6.6"
+APP_VERSION = "0.7.3"
 
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Omaha Server [{}]'.format(APP_VERSION),
-    'MENU': (
+    'MENU': tuple(filter(None, [
         # 'sites',
         {'app': 'omaha', 'label': 'Omaha', 'icon': 'icon-refresh'},
         {'app': 'sparkle', 'label': 'Sparkle', 'icon': 'icon-circle-arrow-down'},
@@ -64,7 +66,7 @@ SUIT_CONFIG = {
         {'label': 'Statistics', 'url': 'omaha_statistics', 'icon': 'icon-star'},
         {'label': 'Preferences', 'url': reverse_lazy('set_preferences', args=['']), 'icon': 'icon-wrench'},
         {'label': 'Storage monitoring', 'url': 'monitoring', 'icon': 'icon-hdd'},
-    ),
+    ])),
     'CONFIRM_UNSAVED_CHANGES': False,
 }
 
@@ -75,7 +77,7 @@ SUIT_CONFIG = {
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'qicy(##kk%%2%#5zyoz)&0*@2wlfis+6s*al2q3t!+#++(0%23'
 
-HOST_NAME = os.environ.get('HOST_NAME')
+HOST_NAME = os.environ.get('HOST_NAME', '*')
 OMAHA_URL_PREFIX = os.environ.get('OMAHA_URL_PREFIX') # no trailing slash!
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -122,23 +124,22 @@ INSTALLED_APPS = (
     'tinymce',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'omaha_server.middlewares.CUP2Middleware',
-)
+]
 
 if IS_PRIVATE:
-    MIDDLEWARE_CLASSES = (
+    MIDDLEWARE = [
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'omaha_server.middlewares.LoggingMiddleware',
         'omaha_server.middlewares.TimezoneMiddleware',
-    ) + MIDDLEWARE_CLASSES
+     ] + MIDDLEWARE
 
 ROOT_URLCONF = 'omaha_server.urls'
 
@@ -156,7 +157,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
         'PORT': os.environ.get('DB_PORT', '5432'),
-        'CONN_MAX_AGE': 60,
+        'CONN_MAX_AGE': 0,
     }
 }
 
@@ -185,7 +186,7 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/static/media/'
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, 'assets'),
@@ -200,31 +201,31 @@ REDIS_STAT_PORT = os.environ.get('REDIS_STAT_PORT', REDIS_PORT)
 REDIS_STAT_HOST = os.environ.get('REDIS_STAT_HOST', REDIS_HOST)
 REDIS_STAT_DB = os.environ.get('REDIS_STAT_DB', 15)
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': '{REDIS_AUTH}{REDIS_HOST}:{REDIS_PORT}:{REDIS_DB}'.format(
-            REDIS_AUTH=REDIS_AUTH,
-            REDIS_PORT=REDIS_PORT,
-            REDIS_HOST=REDIS_HOST,
-            REDIS_DB=os.environ.get('REDIS_DB', 1)),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    },
-    'statistics': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': '{REDIS_AUTH}{REDIS_HOST}:{REDIS_PORT}:{REDIS_DB}'.format(
-            REDIS_AUTH=REDIS_AUTH,
-            REDIS_PORT=REDIS_STAT_PORT,
-            REDIS_HOST=REDIS_STAT_HOST,
-            REDIS_DB=REDIS_STAT_DB),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
+CACHES = {}
+
+CACHES['default'] = {
+    'BACKEND': 'django_redis.cache.RedisCache',
+    'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
+        REDIS_PORT=REDIS_PORT,
+        REDIS_HOST=REDIS_HOST,
+        REDIS_DB=os.environ.get('REDIS_DB', 1)),
+    'OPTIONS': {
+        'CLIENT_CLASS': 'django_redis.client.DefaultClient',
     }
 }
 
+CACHES['statistics'] = {
+    'BACKEND': 'django_redis.cache.RedisCache',
+    'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
+        REDIS_PORT=REDIS_STAT_PORT,
+        REDIS_HOST=REDIS_STAT_HOST,
+        REDIS_DB=REDIS_STAT_DB),
+    'OPTIONS': {
+        'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+    }
+}
+
+# TODO: see if possible to change session storage to local
 SESSION_CACHE_ALIAS = 'default'
 
 STATICFILES_FINDERS = ("django.contrib.staticfiles.finders.FileSystemFinder",
@@ -247,11 +248,13 @@ from kombu import Queue
 BROKER_URL = CELERY_RESULT_BACKEND = '{}{}:{}/{}'.format(REDIS_AUTH or 'redis://', REDIS_HOST, REDIS_PORT, 3)
 CELERY_DISABLE_RATE_LIMITS = True
 CELERY_RESULT_SERIALIZER = 'msgpack'
+CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_MESSAGE_COMPRESSION = 'zlib'
 CELERY_QUEUES = (
     Queue('transient', routing_key='transient', delivery_mode=1),
     Queue('default', routing_key='default'),
 )
+CELERY_ACCEPT_CONTENT = ['pickle', 'msgpack']
 
 if IS_PRIVATE:
     CELERY_QUEUES += (
@@ -287,8 +290,8 @@ if IS_PRIVATE:
         },
     }
 
+# TODO: see if this is needed
 # Cache
-
 CACHEOPS_REDIS = {
     'host': REDIS_HOST,
     'port': REDIS_PORT,
@@ -326,12 +329,11 @@ REST_FRAMEWORK = {
 AUTO_RENDER_SELECT2_STATICS = False
 
 # Client Update Protocol
+CUP_REQUEST_VALIDATION = True if os.environ.get('CUP_REQUEST_VALIDATION', 'False').title() == 'True' else False
 
-CUP_REQUEST_VALIDATION = os.environ.get('CUP_REQUEST_VALIDATION', False)
-
-CUP_PEM_KEYS = {
-    # 'keyid': 'private_key_path',
-}
+CUP_PEM_KEYS = {}
+if CUP_REQUEST_VALIDATION:
+    CUP_PEM_KEYS['1'] = '/run/secrets/cup_key'
 
 CRASH_TRACKER = os.environ.get('CRASH_TRACKER', 'Sentry')
 

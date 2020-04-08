@@ -1,23 +1,48 @@
-db:
-  extends:
-    file: docker-compose.common.yml
-    service: db
+version: '3.7'
 
-redis:
-  extends:
-    file: docker-compose.common.yml
-    service: redis
+services:
+  db:
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
 
-sut:
-  command: 'true'
-  extends:
-    file: docker-compose.common.yml
-    service: web
-  build: .
-  links:
-    - db
-    - redis
-  volumes:
-    - ./:/srv/omaha
-  environment:
-    DJANGO_SETTINGS_MODULE: 'omaha_server.settings_test'
+  redis:
+    image: redis:3.2.6-alpine
+
+  sut:
+    privileged: true
+    ports:
+      - '9090:80'
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    links:
+      - db
+      - redis
+    volumes:
+      - ./:/srv/omaha
+    command: 'true'
+    environment:
+      HOST_NAME: '*'
+      DB_HOST: db
+      DB_USER: postgres
+      DB_NAME: postgres
+      DB_PASSWORD: ''
+      DB_PUBLIC_USER: 'omaha_public'
+      DB_PUBLIC_PASSWORD: 'omaha_public_password'
+      REDIS_HOST: redis
+      DJANGO_SETTINGS_MODULE: 'omaha_server.settings_test'
+      OMAHA_SERVER_PRIVATE: 'True'
+      AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
+      AWS_ROLE: 'omaha-private'
+      AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID'
+      AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY'
+      # UWSGI_PROCESSES: 10
+      # UWSGI_THREADS: 8
+      # FILEBEAT_HOST: 'localhost'
+      # FILEBEAT_PORT: '9021'
+      # ELK_HOST: ''
+      # ELK_PORT: ''
+      # FILEBEAT_DESTINATION: ''
+      # RSYSLOG_ENABLE: 'True'

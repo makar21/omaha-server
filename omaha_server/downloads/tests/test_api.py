@@ -56,6 +56,7 @@ class DownloadsTest(APITestCase):
         }
 
     def test(self):
+        self.skipTest('Skipping test as /api/downloads has been disabled!')
         if connections['default'].settings_dict['ENGINE'] != 'django.db.backends.postgresql_psycopg2':
             self.skipTest('Database should be postgreSQL')
         response = self.client.get('/api/downloads', format='json')

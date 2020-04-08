@@ -21,7 +21,9 @@ the License.
 from functools import partial
 
 from bitmapist import mark_event, MonthEvents
+from django.conf import settings
 from django.utils import timezone
+
 
 from omaha.statistics import get_id, is_new_install, redis
 from omaha.settings import DEFAULT_CHANNEL

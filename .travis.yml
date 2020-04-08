@@ -1,44 +1,30 @@
 language: python
-dist: trusty
-matrix:
-  allow_failures:
-    - env: TOX_ENV=py34
-  include:
-    - python: "2.7"
-      env:
-        - TOX_ENV=py27
-        - OMAHA_SERVER_PRIVATE=True
-    - python: "2.7"
-      env:
-        - TOX_ENV=py27
-        - OMAHA_SERVER_PRIVATE=False
-    - python: "2.7"
-      env:
-        - TOX_ENV=py27
-        - DJANGO_SETTINGS_MODULE=omaha_server.settings_test_postgres
-    - python: "2.7"
-      env:
-        - TOX_ENV=py27
-        - PATH_TO_TEST=omaha.tests.test_public
-        - DJANGO_SETTINGS_MODULE=omaha_server.settings_test_postgres
-        - OMAHA_SERVER_PRIVATE=False
-    - python: "3.4"
-      env: TOX_ENV=py34
-    - python: "2.7"
-      env: TOX_ENV=coverage
+python:
+  - "3.7"
 
-cache: pip
+dist: xenial
 sudo: false
+cache: pip
 
-virtualenv:
-  system_site_packages: true
-
-addons:
-  apt:
-    packages:
-    - python-lxml
-    - python-psycopg2
-    - python-dev
+matrix:
+  include:
+    - env:
+      - TOX_ENV=py37
+      - OMAHA_SERVER_PRIVATE=True
+    - env:
+      - TOX_ENV=py37
+      - OMAHA_SERVER_PRIVATE=False
+    - env:
+      - TOX_ENV=py37
+      - DJANGO_SETTINGS_MODULE=omaha_server.settings_test_postgres
+      - OMAHA_SERVER_PRIVATE=True
+    - env:
+      - TOX_ENV=py37
+      - PATH_TO_TEST=omaha.tests.test_public
+      - DJANGO_SETTINGS_MODULE=omaha_server.settings_test_postgres
+      - OMAHA_SERVER_PRIVATE=False
+    - env:
+      - TOX_ENV=coverage
 
 env:
   global:
@@ -48,9 +34,10 @@ env:
 
 services:
   - redis-server
+  - postgresql
 
 install:
-  - pip install tox==2.2.1
+  - pip install tox
 
 script:
   - tox -e $TOX_ENV

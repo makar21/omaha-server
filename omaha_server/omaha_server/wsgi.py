@@ -12,10 +12,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "omaha_server.settings")
 
 from django.core.wsgi import get_wsgi_application
 
-try:
-  from raven.contrib.django.raven_compat.middleware.wsgi import Sentry
-  application = Sentry(get_wsgi_application())
-except ImportError:
-  print("[WARN] raven python module not found")
-  application = get_wsgi_application()
 
+from raven.contrib.django.raven_compat.middleware.wsgi import Sentry
+application = Sentry(get_wsgi_application())

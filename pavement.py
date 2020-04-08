@@ -20,11 +20,8 @@ the License.
 
 import os
 
-try:
-  from raven import Client
-  client = Client(os.environ.get('RAVEN_DNS'))
-except ImportError:
-  print("[WARN] raven python module not found")
+from raven import Client
+client = Client(os.environ.get('RAVEN_DSN'))
 
 from paver.easy import task, needs
 from paver.easy import sh
@@ -65,11 +62,6 @@ def up_local_dev_server():
     sh('docker-compose -f docker-compose.dev.yml -p dev up -d db')
     sh('docker-compose -f docker-compose.dev.yml -p dev up -d web')
     print("""Open http://{DOCKER_HOST}:9090/admin/\n username: admin\n password: admin""")
-
-
-@task
-def deploy_dev():
-    sh('ebs-deploy deploy -e omaha-server-dev', cwd='omaha_server')
 
 
 @task
@@ -152,6 +144,11 @@ def configure_elasticsearch(elk_host, elk_port):
    filter_path = os.path.abspath("conf/standard_filter.json")
    sh("curl -XPUT '%s:%s/_ingest/pipeline/standard_filter?pretty' -H 'Content-Type: application/json' -d @%s" % (elk_host, elk_port, filter_path))
 
+def configure_rsyslog():
+    RSYSLOG_ENABLE = True if os.environ.get('RSYSLOG_ENABLE', '').title() == 'True' else False
+    if RSYSLOG_ENABLE:
+        rsyslog_conf_path = os.path.abspath("conf/rsyslog.conf")
+        sh(f'rsyslogd -f {rsyslog_conf_path}')
 
 @task
 def docker_run():
@@ -165,6 +162,7 @@ def docker_run():
             collectstatic()
         configure_nginx()
         configure_filebeat()
+        configure_rsyslog()
         sh('/usr/bin/supervisord')
     except:
         client.captureException()
@@ -173,8 +171,6 @@ def docker_run():
 
 @task
 def docker_run_test():
-    sh('apt-get install -y python-dev libxslt-dev libpq-dev')
-    sh('pip install -r requirements/test.txt --use-mirrors')
     test()
     test_postgres()
 
@@ -182,6 +178,7 @@ def docker_run_test():
 @task
 def run_test_in_docker():
     try:
+        sh('docker-compose -f docker-compose.tests.yml -p omaha_testing build sut')
         sh('docker-compose -f docker-compose.tests.yml -p omaha_testing run --rm sut paver docker_run_test')
     except:
         pass

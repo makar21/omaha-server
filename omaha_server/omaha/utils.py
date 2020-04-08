@@ -25,6 +25,7 @@ import calendar
 from django.db.models import Q
 
 from singledispatch import singledispatch
+from django.conf import settings
 from django_redis import get_redis_connection
 from redis.exceptions import WatchError
 from django.utils import timezone
