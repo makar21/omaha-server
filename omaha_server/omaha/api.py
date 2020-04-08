@@ -27,7 +27,6 @@ from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework import pagination
-from rest_framework.views import APIView
 from rest_framework.response import Response
 
 import pytz
@@ -184,7 +183,7 @@ class ActionViewSet(viewsets.ModelViewSet):
     serializer_class = ActionSerializer
 
 
-class StatisticsMonthsDetailView(APIView):
+class StatisticsMonthsDetailView(viewsets.ViewSet):
     MAC_KEYS = ['new', 'updates']
     OMAHA_KEYS = MAC_KEYS + ['uninstalls']
 
@@ -222,7 +221,7 @@ class StatisticsMonthsDetailView(APIView):
         serializer = StatisticsMonthsSerializer(dict(data=data))
         return Response(serializer.data)
 
-class StatisticsVersionsView(APIView):
+class StatisticsVersionsView(viewsets.ViewSet):
     def get_object(self, name):
         try:
             return Application.objects.get(name=name)
@@ -242,7 +241,7 @@ class StatisticsVersionsView(APIView):
         return Response(serializer.data)
 
 
-class StatisticsVersionsLiveView(APIView):
+class StatisticsVersionsLiveView(viewsets.ViewSet):
     def get_object(self, name):
         try:
             return Application.objects.get(name=name)
@@ -268,7 +267,7 @@ class StatisticsVersionsLiveView(APIView):
         return Response(serializer.data)
 
 
-class StatisticsChannelsView(APIView):
+class StatisticsChannelsView(viewsets.ViewSet):
     def get_object(self, name):
         try:
             return Application.objects.get(name=name)
@@ -288,7 +287,7 @@ class StatisticsChannelsView(APIView):
         return Response(serializer.data)
 
 
-class ServerVersionView(APIView):
+class ServerVersionView(viewsets.ViewSet):
     def get(self, request, format=None):
         version = settings.APP_VERSION
         serializer = ServerVersionSerializer(dict(version=version))

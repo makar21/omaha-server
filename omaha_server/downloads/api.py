@@ -23,7 +23,6 @@ from django.conf import settings
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework import pagination
-from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from omaha.api import BaseView
@@ -32,7 +31,7 @@ from sparkle.serializers import SparkleVersionSerializer
 from sparkle.models import SparkleVersion
 
 
-class LatestVersionView(APIView):
+class LatestVersionView(viewsets.ViewSet):
     """
     API returns an information about the latest versions of applications available on the server. The information contains supported platforms, provided channels, version numbers and download links.
     """
