@@ -77,7 +77,7 @@ SUIT_CONFIG = {
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'qicy(##kk%%2%#5zyoz)&0*@2wlfis+6s*al2q3t!+#++(0%23'
 
-HOST_NAME = os.environ.get('HOST_NAME')
+HOST_NAME = os.environ.get('HOST_NAME', '*')
 OMAHA_URL_PREFIX = os.environ.get('OMAHA_URL_PREFIX') # no trailing slash!
 
 # SECURITY WARNING: don't run with debug turned on in production!
