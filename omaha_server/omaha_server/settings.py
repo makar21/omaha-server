@@ -329,7 +329,7 @@ REST_FRAMEWORK = {
 AUTO_RENDER_SELECT2_STATICS = False
 
 # Client Update Protocol
-CUP_REQUEST_VALIDATION = True if os.environ.get('CUP_REQUEST_VALIDATION', 'True').title() == 'True' else False
+CUP_REQUEST_VALIDATION = True if os.environ.get('CUP_REQUEST_VALIDATION', 'False').title() == 'True' else False
 
 CUP_PEM_KEYS = {}
 if CUP_REQUEST_VALIDATION:
