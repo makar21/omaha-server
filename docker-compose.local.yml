@@ -26,11 +26,11 @@ services:
       DB_USER: postgres
       DB_NAME: postgres
       DB_PASSWORD: ''
-      DJANGO_SETTINGS_MODULE: 'omaha_server.settings_local'
-      REDIS_HOST: redis
-      OMAHA_SERVER_PRIVATE: 'True'
       DB_PUBLIC_USER: 'omaha_public'
       DB_PUBLIC_PASSWORD: 'omaha_public_password'
+      REDIS_HOST: redis
+      DJANGO_SETTINGS_MODULE: 'omaha_server.settings_local'
+      OMAHA_SERVER_PRIVATE: 'True'
       AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
       AWS_ROLE: 'omaha-private'
     sysctls:
@@ -54,13 +54,12 @@ services:
       DB_USER: postgres
       DB_NAME: postgres
       DB_PASSWORD: ''
-      DJANGO_SETTINGS_MODULE: 'omaha_server.settings_local'
-      REDIS_HOST: redis
-      OMAHA_SERVER_PRIVATE: 'False'
       DB_PUBLIC_USER: 'omaha_public'
       DB_PUBLIC_PASSWORD: 'omaha_public_password'
+      REDIS_HOST: redis
+      DJANGO_SETTINGS_MODULE: 'omaha_server.settings_local'
+      OMAHA_SERVER_PRIVATE: 'False'
       AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
       AWS_ROLE: 'omaha-public'
-      CDN_NAME: 'localhost'
     sysctls:
       net.core.somaxconn: 1024

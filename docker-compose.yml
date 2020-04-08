@@ -15,20 +15,21 @@ services:
     ports:
       - '9090:80'
     environment:
+      HOST_NAME: '*'
       DB_HOST: db
       DB_USER: postgres
       DB_NAME: postgres
       DB_PASSWORD: ''
-      HOST_NAME: '*'
-      DJANGO_SETTINGS_MODULE: 'omaha_server.settings_prod'
-      AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID'
-      AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY'
-      AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
-      REDIS_HOST: redis
-      OMAHA_SERVER_PRIVATE: 'True'
-      AWS_ROLE: 'omaha-private'
       DB_PUBLIC_USER: 'omaha_public'
       DB_PUBLIC_PASSWORD: 'omaha_public_password'
+      REDIS_HOST: redis
+      DJANGO_SETTINGS_MODULE: 'omaha_server.settings_prod'
+      OMAHA_SERVER_PRIVATE: 'True'
+      AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
+      AWS_ROLE: 'omaha-private'
+      AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID'
+      AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY'
+      CUP_REQUEST_VALIDATION: 'True'
       # UWSGI_PROCESSES: 10
       # UWSGI_THREADS: 8
       # FILEBEAT_HOST: 'localhost'
