@@ -129,6 +129,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'omaha_server.middlewares.CUP2Middleware',
 ]
 
 if IS_PRIVATE:
@@ -138,9 +139,7 @@ if IS_PRIVATE:
         'django.contrib.messages.middleware.MessageMiddleware',
         'omaha_server.middlewares.LoggingMiddleware',
         'omaha_server.middlewares.TimezoneMiddleware',
-        'omaha_server.middlewares.CUP2Middleware',
      ] + MIDDLEWARE
-    # TODO: mplesa this might fail
 
 ROOT_URLCONF = 'omaha_server.urls'
 
@@ -226,7 +225,7 @@ CACHES['statistics'] = {
     }
 }
 
-# TODO: mplesa change sessions storage to local
+# TODO: see if possible to change session storage to local
 SESSION_CACHE_ALIAS = 'default'
 
 STATICFILES_FINDERS = ("django.contrib.staticfiles.finders.FileSystemFinder",
@@ -291,7 +290,7 @@ if IS_PRIVATE:
         },
     }
 
-# TODO: mplesa see if this is needed
+# TODO: see if this is needed
 # Cache
 CACHEOPS_REDIS = {
     'host': REDIS_HOST,
@@ -332,9 +331,9 @@ AUTO_RENDER_SELECT2_STATICS = False
 # Client Update Protocol
 CUP_REQUEST_VALIDATION = True if os.environ.get('CUP_REQUEST_VALIDATION', 'True').title() == 'True' else False
 
-CUP_PEM_KEYS = {
-    # 'keyid': 'private_key_path',
-}
+CUP_PEM_KEYS = {}
+if CUP_REQUEST_VALIDATION:
+    CUP_PEM_KEYS['1'] = '/run/secrets/cup_key'
 
 CRASH_TRACKER = os.environ.get('CRASH_TRACKER', 'Sentry')
 

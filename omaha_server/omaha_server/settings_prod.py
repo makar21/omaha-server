@@ -119,9 +119,3 @@ if RSYSLOG_ENABLE:
 
 if os.environ.get('CDN_NAME'):
     CDN_NAME = os.environ.get('CDN_NAME')
-
-
-if CUP_REQUEST_VALIDATION:
-    CUP_PEM_KEYS = {
-        '1': '/run/secrets/cup_key'
-    }

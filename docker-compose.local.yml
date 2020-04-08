@@ -60,7 +60,7 @@ services:
       DB_PUBLIC_USER: 'omaha_public'
       DB_PUBLIC_PASSWORD: 'omaha_public_password'
       AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
-      AWS_ROLE: 'omaha-private'
+      AWS_ROLE: 'omaha-public'
       CDN_NAME: 'localhost'
     sysctls:
       net.core.somaxconn: 1024
