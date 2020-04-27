@@ -12,7 +12,14 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 from datetime import timedelta
 
+import dotenv
+import environ
 from django.urls import reverse_lazy
+
+dotenv.load_dotenv(dotenv.find_dotenv(), override=True)
+environ.Env.read_env('.env')
+env = environ.Env()
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_DIR = BASE_DIR
