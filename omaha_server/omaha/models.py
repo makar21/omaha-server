@@ -113,6 +113,10 @@ class Version(BaseModel):
                             storage=public_read_storage)
     file_hash = models.CharField(verbose_name='Hash', max_length=140,
                                  null=True, blank=True)
+
+    file_hash_sha256 = models.CharField(verbose_name='Hash SHA256', max_length=140,
+                                        null=True, blank=True)
+
     file_size = models.PositiveIntegerField(null=True, blank=True)
 
     objects = VersionManager()
@@ -333,10 +337,15 @@ def pre_version_save(sender, instance, *args, **kwargs):
             finally:
                 old.file_size = 0
     sha1 = hashlib.sha1()
+    sha256 = hashlib.sha3_256()
     for chunk in instance.file.chunks():
         sha1.update(chunk)
+        sha256.update(chunk)
+
     instance.file.seek(0)
     instance.file_hash = base64.b64encode(sha1.digest()).decode()
+    instance.file_hash_sha256 = sha256.hexdigest()
+
 
 
 

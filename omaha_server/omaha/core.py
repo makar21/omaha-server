@@ -107,7 +107,7 @@ def Urls(urls_list):
     return urls
 
 
-def Package(name, required, size, hash, fp=None):
+def Package(name, required, size, hash, hash_sha256, fp=None):
     """
         >>> from lxml import etree as ET
         >>> print(ET.tostring(Package(
@@ -121,7 +121,9 @@ def Package(name, required, size, hash, fp=None):
         name=name,
         required=required,
         size=size,
-        hash=hash
+        hash=hash,
+
+
     )
     if fp:
         attrs['fp'] = fp

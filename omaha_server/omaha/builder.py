@@ -163,6 +163,7 @@ def on_app(apps_list, app, os, userid):
                     required='true',
                     size=str(version.file_size),
                     hash=version.file_hash,
+                    hash_sha256=version.file_hash_sha256
                 )]),
                 actions=Actions(actions) if actions else None,
             )
