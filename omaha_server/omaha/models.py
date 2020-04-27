@@ -337,7 +337,7 @@ def pre_version_save(sender, instance, *args, **kwargs):
             finally:
                 old.file_size = 0
     sha1 = hashlib.sha1()
-    sha256 = hashlib.sha3_256()
+    sha256 = hashlib.sha256()
     for chunk in instance.file.chunks():
         sha1.update(chunk)
         sha256.update(chunk)
