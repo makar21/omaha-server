@@ -1,19 +1,7 @@
 version: "2.4"
 
 services:
-  rabbitmq:
-    image: rabbitmq:management-alpine
-    ports:
-    - "127.0.0.1:$RABBITMQ_PORT:5672"
-    - "$RABBITMQ_ADMIN_PORT:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: $RABBITMQ_USER
-      RABBITMQ_DEFAULT_PASS: $RABBITMQ_PASSWORD
-      RABBITMQ_DEFAULT_VHOST: $RABBITMQ_VHOST
-    volumes:
-      - $PWD/docker/volumes/rabbitmq:/var/lib/rabbitmq
-
-  db:
+  postgres:
     image: postgres:10.4-alpine
     environment:
       POSTGRES_USER: $POSTGRES_USER

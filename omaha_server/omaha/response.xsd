@@ -79,6 +79,7 @@
             <xs:attribute name="required" use="required" type="xs:string"/>
             <xs:attribute name="size" use="required" type="xs:positiveInteger"/>
             <xs:attribute name="hash" use="required" type="xs:string"/>
+            <xs:attribute name="hash_sha256" use="required" type="xs:string"/>
             <xs:attribute name="fp" use="optional" type="xs:string"/>
         </xs:complexType>
     </xs:element>

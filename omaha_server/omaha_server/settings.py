@@ -24,13 +24,16 @@ env = environ.Env()
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_DIR = BASE_DIR
 
-IS_PRIVATE = True if os.getenv('OMAHA_SERVER_PRIVATE', '').title() == 'True' else False
+
+IS_PRIVATE = True
+
+SENTRY_DSN = env('RAVEN_DSN', default=None)
 
 RAVEN_CONFIG = {
-    'dsn': os.environ.get('RAVEN_DSN'),
+    'dsn': SENTRY_DSN
 }
 
-if os.getenv('OMAHA_ONLY_HTTPS'):
+if env.bool('OMAHA_ONLY_HTTPS', default=False):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -85,7 +88,7 @@ SUIT_CONFIG = {
 SECRET_KEY = 'qicy(##kk%%2%#5zyoz)&0*@2wlfis+6s*al2q3t!+#++(0%23'
 
 HOST_NAME = os.environ.get('HOST_NAME', '*')
-OMAHA_URL_PREFIX = os.environ.get('OMAHA_URL_PREFIX') # no trailing slash!
+OMAHA_URL_PREFIX = os.environ.get('OMAHA_URL_PREFIX', 'static') # no trailing slash!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -159,18 +162,15 @@ WSGI_APPLICATION = 'omaha_server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'postgres'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'HOST': env('POSTGRES_HOST', default='db'),
+        'PORT': env('POSTGRES_PORT', default=5432),
+        'NAME': env('POSTGRES_DB', default='db'),
+        'USER': env('POSTGRES_USER', default='admin'),
+        'PASSWORD': env('POSTGRES_PASSWORD', default='admin'),
         'CONN_MAX_AGE': 0,
     }
 }
 
-DB_PUBLIC_ROLE = os.environ.get('DB_PUBLIC_ROLE', 'public_users')
-DB_PUBLIC_USER = os.environ.get('DB_PUBLIC_USER', 'omaha_public')
-DB_PUBLIC_PASSWORD = os.environ.get('DB_PUBLIC_PASSWORD', '')
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -208,9 +208,7 @@ REDIS_STAT_PORT = os.environ.get('REDIS_STAT_PORT', REDIS_PORT)
 REDIS_STAT_HOST = os.environ.get('REDIS_STAT_HOST', REDIS_HOST)
 REDIS_STAT_DB = os.environ.get('REDIS_STAT_DB', 15)
 
-CACHES = {}
-
-CACHES['default'] = {
+CACHES = {'default': {
     'BACKEND': 'django_redis.cache.RedisCache',
     'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
         REDIS_PORT=REDIS_PORT,
@@ -219,9 +217,7 @@ CACHES['default'] = {
     'OPTIONS': {
         'CLIENT_CLASS': 'django_redis.client.DefaultClient',
     }
-}
-
-CACHES['statistics'] = {
+}, 'statistics': {
     'BACKEND': 'django_redis.cache.RedisCache',
     'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
         REDIS_PORT=REDIS_STAT_PORT,
@@ -230,7 +226,7 @@ CACHES['statistics'] = {
     'OPTIONS': {
         'CLIENT_CLASS': 'django_redis.client.DefaultClient',
     }
-}
+}}
 
 # TODO: see if possible to change session storage to local
 SESSION_CACHE_ALIAS = 'default'
@@ -249,7 +245,6 @@ BOWER_INSTALLED_APPS = (
 
 
 # Celery
-
 from kombu import Queue
 
 BROKER_URL = CELERY_RESULT_BACKEND = '{}{}:{}/{}'.format(REDIS_AUTH or 'redis://', REDIS_HOST, REDIS_PORT, 3)

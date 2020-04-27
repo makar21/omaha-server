@@ -21,28 +21,16 @@ services:
       - db
       - redis
     environment:
-      HOST_NAME: '*'
+      HOST_NAME: $HOST_NAME
       DB_HOST: db
-      DB_USER: postgres
-      DB_NAME: postgres
-      DB_PASSWORD: ''
-      DB_PUBLIC_USER: 'omaha_public'
-      DB_PUBLIC_PASSWORD: 'omaha_public_password'
+      DB_USER: $POSTGRES_USER
+      DB_NAME: $POSTGRES_DB
+      DB_PASSWORD: $POSTGRES_PASSWORD
       REDIS_HOST: redis
       DJANGO_SETTINGS_MODULE: 'omaha_server.settings'
-      OMAHA_SERVER_PRIVATE: 'True'
-      AWS_STORAGE_BUCKET_NAME: 'aws_storage_bucket_name'
-      AWS_ROLE: 'omaha-private'
-      AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID'
-      AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY'
-      LOG_NGINX_TO_FILEBEAT: 'False'
-      # UWSGI_PROCESSES: 10
-      # UWSGI_THREADS: 8
-      # FILEBEAT_HOST: 'localhost'
-      # FILEBEAT_PORT: '9021'
-      # ELK_HOST: ''
-      # ELK_PORT: ''
-      # FILEBEAT_DESTINATION: ''
-      # RSYSLOG_ENABLE: 'True'
+      AWS_STORAGE_BUCKET_NAME: $AWS_STORAGE_BUCKET_NAME
+      AWS_ROLE: $AWS_ROLE
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     sysctls:
       net.core.somaxconn: 1024
