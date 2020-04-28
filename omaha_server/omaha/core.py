@@ -122,8 +122,7 @@ def Package(name, required, size, hash, hash_sha256, fp=None):
         required=required,
         size=size,
         hash=hash,
-
-
+        hash_sha256=hash_sha256
     )
     if fp:
         attrs['fp'] = fp
