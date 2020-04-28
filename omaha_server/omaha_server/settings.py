@@ -25,8 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_DIR = BASE_DIR
 
 
-IS_PRIVATE = True
-
+IS_PRIVATE = env.bool('OMAHA_SERVER_PRIVATE', default=True)
 SENTRY_DSN = env('RAVEN_DSN', default=None)
 
 RAVEN_CONFIG = {
@@ -85,17 +84,16 @@ SUIT_CONFIG = {
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'qicy(##kk%%2%#5zyoz)&0*@2wlfis+6s*al2q3t!+#++(0%23'
+SECRET_KEY = env('SECRET_KEY', default='qicy(##kk%%2%#5zyoz)&0*@2wlfis+6s*al2q3t!+#++(0%23')
 
-HOST_NAME = os.environ.get('HOST_NAME', '*')
-OMAHA_URL_PREFIX = os.environ.get('OMAHA_URL_PREFIX', 'static') # no trailing slash!
+HOST_NAME = env('HOST_NAME', default='*')
+OMAHA_URL_PREFIX = env('OMAHA_URL_PREFIX', default='')  # no trailing slash!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG', default=False)
+TEMPLATE_DEBUG = env('TEMPLATE_DEBUG', default=True)
 
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [HOST_NAME]
 
 
 # Application definition
@@ -199,34 +197,40 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, 'assets'),
 )
 
-REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
-REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
-REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', None)
+
+REDIS_HOST = env('REDIS_HOST', default='redis')
+REDIS_PORT = env.int('REDIS_PORT', default=6379)
+
+REDIS_PASSWORD = env('REDIS_PASSWORD', default=None)
 REDIS_AUTH = 'redis://:{}@'.format(REDIS_PASSWORD) if REDIS_PASSWORD else ''
 
-REDIS_STAT_PORT = os.environ.get('REDIS_STAT_PORT', REDIS_PORT)
-REDIS_STAT_HOST = os.environ.get('REDIS_STAT_HOST', REDIS_HOST)
-REDIS_STAT_DB = os.environ.get('REDIS_STAT_DB', 15)
+REDIS_STAT_HOST = env('REDIS_STAT_HOST', default=REDIS_HOST)
+REDIS_STAT_PORT = env.int('REDIS_STAT_PORT', default=REDIS_PORT)
 
-CACHES = {'default': {
-    'BACKEND': 'django_redis.cache.RedisCache',
-    'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
-        REDIS_PORT=REDIS_PORT,
-        REDIS_HOST=REDIS_HOST,
-        REDIS_DB=os.environ.get('REDIS_DB', 1)),
-    'OPTIONS': {
-        'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+REDIS_STAT_DB = env.int('REDIS_STAT_DB', default=15)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
+            REDIS_PORT=REDIS_PORT,
+            REDIS_HOST=REDIS_HOST,
+            REDIS_DB=env.int('REDIS_DB', default=1)),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    },
+    'statistics': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
+            REDIS_PORT=REDIS_STAT_PORT,
+            REDIS_HOST=REDIS_STAT_HOST,
+            REDIS_DB=REDIS_STAT_DB),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
-}, 'statistics': {
-    'BACKEND': 'django_redis.cache.RedisCache',
-    'LOCATION': 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'.format(
-        REDIS_PORT=REDIS_STAT_PORT,
-        REDIS_HOST=REDIS_STAT_HOST,
-        REDIS_DB=REDIS_STAT_DB),
-    'OPTIONS': {
-        'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-    }
-}}
+}
 
 # TODO: see if possible to change session storage to local
 SESSION_CACHE_ALIAS = 'default'
@@ -236,7 +240,6 @@ STATICFILES_FINDERS = ("django.contrib.staticfiles.finders.FileSystemFinder",
                        "djangobower.finders.BowerFinder",)
 
 BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_DIR, 'assets', 'components')
-
 BOWER_INSTALLED_APPS = (
     'd3#3.3.13',
     'nvd3#1.7.1',
@@ -310,7 +313,7 @@ CACHEOPS = {
 
 # Crash
 
-CRASH_S3_MOUNT_PATH = os.environ.get('CRASH_S3_MOUNT_PATH', '/srv/omaha_s3')
+CRASH_S3_MOUNT_PATH = env('CRASH_S3_MOUNT_PATH', default='/srv/omaha_s3')
 CRASH_SYMBOLS_PATH = os.path.join(CRASH_S3_MOUNT_PATH, 'symbols')
 
 # django-rest-framework
@@ -331,16 +334,16 @@ REST_FRAMEWORK = {
 AUTO_RENDER_SELECT2_STATICS = False
 
 # Client Update Protocol
-CUP_REQUEST_VALIDATION = True if os.environ.get('CUP_REQUEST_VALIDATION', 'False').title() == 'True' else False
+CUP_REQUEST_VALIDATION = env.bool('CUP_REQUEST_VALIDATION', default=False)
 
 CUP_PEM_KEYS = {}
 if CUP_REQUEST_VALIDATION:
     CUP_PEM_KEYS['1'] = '/run/secrets/cup_key'
 
-CRASH_TRACKER = os.environ.get('CRASH_TRACKER', 'Sentry')
+CRASH_TRACKER = env('CRASH_TRACKER', default='Sentry')
 
-LOGSTASH_HOST = os.environ.get('LOGSTASH_HOST')
-LOGSTASH_PORT = os.environ.get('LOGSTASH_PORT')
+LOGSTASH_HOST = env('LOGSTASH_HOST', default=None)
+LOGSTASH_PORT = env('LOGSTASH_PORT', default=None)
 
 TINYMCE_BUTTONS = [
     'bold',
