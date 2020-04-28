@@ -153,9 +153,9 @@ class Version(BaseModel):
         url.port = settings.HOST_PORT
         url.host = settings.HOST_NAME
         if url.port and url.port != 80:
-            return '%s://%s:%d/static/%s/' % (url.scheme, url.host, url.port, os.path.dirname(url.pathstr))
+            return '%s://%s:%d/static%s/' % (url.scheme, url.host, url.port, os.path.dirname(url.pathstr))
         else:
-            return '%s://%s/static/%s/' % (url.scheme, url.host, os.path.dirname(url.pathstr))
+            return '%s://%s/static%s/' % (url.scheme, url.host, os.path.dirname(url.pathstr))
 
     @property
     def size(self):
