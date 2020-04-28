@@ -159,10 +159,11 @@ def docker_run():
         if is_private:
             migrate()
             loaddata()
+            # create_admin()
             collectstatic()
         configure_nginx()
-        configure_filebeat()
-        configure_rsyslog()
+        # configure_filebeat()
+        # configure_rsyslog()
         sh('/usr/bin/supervisord')
     except:
         client.captureException()
