@@ -6,6 +6,9 @@ from django.conf import settings
 
 
 def grant_permissions(apps, schema_editor):
+    if settings.DB_PUBLIC_ROLE is None:
+        return
+
     cursor = connection.cursor()
     cursor.execute('GRANT SELECT ON TABLE django_site TO GROUP %s;' % settings.DB_PUBLIC_ROLE)
 

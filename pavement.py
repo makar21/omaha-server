@@ -20,11 +20,11 @@ the License.
 
 import os
 
-from raven import Client
-client = Client(os.environ.get('RAVEN_DSN'))
-
-from paver.easy import task, needs
 from paver.easy import sh
+from paver.easy import task, needs
+from raven import Client
+
+client = Client(os.environ.get('RAVEN_DSN'))
 
 
 @task
@@ -88,9 +88,10 @@ def create_admin():
 def configure_nginx():
     filebeat_host = os.environ.get('FILEBEAT_HOST', '')
     filebeat_port = os.environ.get('FILEBEAT_PORT', '')
-    log_nginx_to_filebeat = True if os.environ.get('LOG_NGINX_TO_FILEBEAT', 'True').title() == 'True' else False
+    log_nginx_to_filebeat = True if os.environ.get('LOG_NGINX_TO_FILEBEAT', 'False').title() == 'True' else False
     if log_nginx_to_filebeat and filebeat_host and filebeat_port.isdigit():
         filebeat_read_nginx_logs()
+
     server_name = os.environ.get('HOST_NAME', '_')
     server_name = server_name if server_name != '*' else '_'
     sh("sed -i 's/server_name.*;/server_name %s;/g' /etc/nginx/sites-enabled/nginx-app.conf" % (server_name))
@@ -153,12 +154,11 @@ def configure_rsyslog():
 @task
 def docker_run():
     try:
-        is_private = True if os.environ.get('OMAHA_SERVER_PRIVATE', '').title() == 'True' else False
+        is_private = True if os.environ.get('OMAHA_SERVER_PRIVATE', 'True').title() == 'True' else False
 
         if is_private:
             migrate()
             loaddata()
-            create_admin()
             collectstatic()
         configure_nginx()
         configure_filebeat()

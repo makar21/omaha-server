@@ -157,10 +157,13 @@ WSGI_APPLICATION = 'omaha_server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+DB_PUBLIC_USER = env('DB_PUBLIC_USER', default=None)
+DB_PUBLIC_ROLE = env('DB_PUBLIC_ROLE', default=None)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': env('POSTGRES_HOST', default='db'),
+        'HOST': env('POSTGRES_HOST', default='postgres'),
         'PORT': env('POSTGRES_PORT', default=5432),
         'NAME': env('POSTGRES_DB', default='db'),
         'USER': env('POSTGRES_USER', default='admin'),

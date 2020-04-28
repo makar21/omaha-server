@@ -4,7 +4,11 @@
 from django.conf import settings
 from django.db import models, migrations, connection
 
+
 def grant_permissions(apps, schema_editor):
+    if settings.DB_PUBLIC_ROLE is None:
+        return
+
     cursor = connection.cursor()
 
     cursor.execute('GRANT SELECT, UPDATE, INSERT ON TABLE feedback_feedback, '
@@ -14,6 +18,7 @@ def grant_permissions(apps, schema_editor):
                    'feedback_feedback_id_seq TO GROUP %s;' % settings.DB_PUBLIC_ROLE)
     cursor.execute('GRANT USAGE, UPDATE ON SEQUENCE '
                    'feedback_feedback_id_seq TO GROUP %s;' % settings.DB_PUBLIC_ROLE)
+
 
 class Migration(migrations.Migration):
 

@@ -25,6 +25,9 @@ def get_group(user, cursor):
 
 
 def grant_permissions(apps, schema_editor):
+    if settings.DB_PUBLIC_USER is None:
+        return
+
     cursor = connection.cursor()
 
     cursor.execute("select * from pg_catalog.pg_user where usename=%s;", [settings.DB_PUBLIC_USER])
@@ -52,6 +55,7 @@ def grant_permissions(apps, schema_editor):
     # grant permissions to a user for all sequences in a schema
     cursor.execute('GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA public to %s;' % settings.DB_PUBLIC_ROLE)
     cursor.execute('GRANT UPDATE, USAGE ON ALL SEQUENCES IN SCHEMA public to %s;' % settings.DB_PUBLIC_ROLE)
+
 
 class Migration(migrations.Migration):
     dependencies = [

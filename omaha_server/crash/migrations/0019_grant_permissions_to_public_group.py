@@ -4,7 +4,11 @@
 from django.conf import settings
 from django.db import models, migrations, connection
 
+
 def grant_permissions(apps, schema_editor):
+    if settings.DB_PUBLIC_ROLE is None:
+        return
+
     cursor = connection.cursor()
 
     cursor.execute('GRANT SELECT, INSERT, UPDATE ON TABLE crash_crash, crash_crash_id_seq, '

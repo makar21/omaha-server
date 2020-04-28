@@ -68,6 +68,8 @@ Markdown = "<3.0.0"
 paver = "==1.2.4"
 Pillow = "*"
 lxml = "==4.3.3"
+python-dotenv = "==0.10.3"
+django-environ = "==0.4.5"
 
 [requires]
 python_version = "3.7"
