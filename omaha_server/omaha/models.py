@@ -149,6 +149,9 @@ class Version(BaseModel):
     @property
     def file_url(self):
         url = furl(self.file_absolute_url)
+        url.scheme = settings.HOST_SCHEME
+        url.port = settings.HOST_PORT
+        url.host = settings.HOST_NAME
         if url.port and url.port != 80:
             return '%s://%s:%d%s/' % (url.scheme, url.host, url.port, os.path.dirname(url.pathstr))
         else:

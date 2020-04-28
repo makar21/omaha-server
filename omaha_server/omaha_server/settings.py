@@ -87,6 +87,9 @@ SUIT_CONFIG = {
 SECRET_KEY = env('SECRET_KEY', default='qicy(##kk%%2%#5zyoz)&0*@2wlfis+6s*al2q3t!+#++(0%23')
 
 HOST_NAME = env('HOST_NAME', default='*')
+HOST_SCHEME = env('HOST_SCHEME', default='http')
+HOST_PORT = env.int('HOST_PORT', default=80)
+
 OMAHA_URL_PREFIX = env('OMAHA_URL_PREFIX', default='')  # no trailing slash!
 
 # SECURITY WARNING: don't run with debug turned on in production!
