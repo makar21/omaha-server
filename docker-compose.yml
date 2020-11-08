@@ -39,7 +39,8 @@ services:
     ports:
       - '80:80'
     volumes:
-      - $PWD/docker/volumes/web:/srv/omaha/omaha_server/static
+      - $PWD/docker/volumes/web/static:/srv/omaha/omaha_server/static
+      - $PWD/docker/volumes/web/media:/srv/omaha/omaha_server/media
     environment:
       HOST_NAME: $HOST_NAME
       POSTGRES_USER: $POSTGRES_USER
